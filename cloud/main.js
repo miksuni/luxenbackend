@@ -2,7 +2,7 @@ Parse.Cloud.define('hello', function(req, res) {
   return 'Hi';
 });
 
-Parse.Cloud.define('productInfo', async (req) => {
+Parse.Cloud.define('productinfo', async (req) => {
 
 	let returnMessage = 'Ok';
 
