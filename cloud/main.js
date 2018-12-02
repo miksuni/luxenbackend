@@ -13,22 +13,51 @@ Parse.Cloud.define('productinfo', async (req) => {
 
 		const query = new Parse.Query('ProductInfo');
 		const results = await query.find();
-		var i = 0;
-
-		/*for (i; i < results.length; i++) {
-			console.log('>> exercise obj found');
-			const name = results[i].get("name");
-			const order = results[i].get("order");
-			const exerciseId = results[i].get("exerciseId");
-			const targetArea = results[i].get("targetArea");
-			const pauseInSec = results[i].get("pauseInSec");
-			const setCount = results[i].get("setCount");
-			const repeatsInSet = results[i].get("repeatsInSet");
-		}*/
 
 		returnMessage = JSON.stringify(results);
 
 		console.log('>> return message: ' + returnMessage);
 		return returnMessage;
+	}
+});
+
+Parse.Cloud.define('addproduct', async (req) => {
+
+	let returnMessage = 'Ok';
+
+	if (Object.keys(req.params).length > 0) {
+		console.log(">> addproduct: json contains data");
+
+		var obj = new Parse.Object('ProductInfo');
+
+		if ('ISBN' in req.params) {
+			console.log('>>' + req.params.ISBN);
+			obj.set('ISBN', req.params.ISBN);
+		}
+		if ('Tuotenro' in req.params) {
+			console.log('>>' + req.params.Tuotenro);
+			obj.set('productCode', req.params.Tuotenro);
+		}
+		if ('Tuote' in req.params) {
+			console.log('>>' + req.params.Tuote);
+			obj.set('productName', req.params.Tuote);
+		}
+		if ('Kpl' in req.params) {
+			console.log('>>' + req.params.Kpl);
+			obj.set('amountInStock', parseInt(req.params.Kpl, 10));
+		}
+		if ('Hinta' in req.params) {
+			console.log('>>' + req.params.Hinta);
+			obj.set('price', parseInt(req.params.Hinta, 10));
+		}
+		if ('Hinta' in req.params) {
+			console.log('>>' + req.params.Hinta);
+			obj.set('price', parseInt(req.params.Hinta, 10));
+		}
+		obj.save().then(function(obj) {
+			console.log('>> productInfo saved');
+		}, function(err) { console.log(err); });
+	} else {
+		console.log(">> productinfo json does not contain data");
 	}
 });
