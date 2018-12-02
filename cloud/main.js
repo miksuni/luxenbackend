@@ -52,7 +52,7 @@ Parse.Cloud.define('addproduct', async (req) => {
 		}
 		if ('Tilattavissa' in req.params) {
 			console.log('>>' + req.params.Tilattavissa);
-			obj.set('availableFromPublisher', req.params.Tilattavissa);
+			obj.set('availableFromPublisher', stringToBoolean(req.params.Tilattavissa));
 		}
 		obj.save().then(function(obj) {
 			console.log('>> productInfo saved');
@@ -61,3 +61,10 @@ Parse.Cloud.define('addproduct', async (req) => {
 		console.log(">> productinfo json does not contain data");
 	}
 });
+
+stringToBoolean: function(string) {
+	switch(string.toLowerCase()) {
+		case "false": case "no": case "0": case "": return false;
+		default: return true;
+	}
+}
