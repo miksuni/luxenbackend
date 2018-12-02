@@ -50,9 +50,9 @@ Parse.Cloud.define('addproduct', async (req) => {
 			console.log('>>' + req.params.Hinta);
 			obj.set('price', parseInt(req.params.Hinta, 10));
 		}
-		if ('Hinta' in req.params) {
-			console.log('>>' + req.params.Hinta);
-			obj.set('price', parseInt(req.params.Hinta, 10));
+		if ('Tilattavissa' in req.params) {
+			console.log('>>' + req.params.Tilattavissa);
+			obj.set('availableFromPublisher', req.params.Tilattavissa);
 		}
 		obj.save().then(function(obj) {
 			console.log('>> productInfo saved');
