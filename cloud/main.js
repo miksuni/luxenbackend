@@ -68,7 +68,7 @@ Parse.Cloud.define('saveproduct', async (req) => {
 	let returnMessage = 'Error';
 
 	if (Object.keys(req.params).length > 0) {
-		console.log(">> productinfo json contains data");
+		console.log(">> productinfo json contains data, objectId: " + req.params.objectId);
 	} else {
 		console.log(">> productinfo json does not contain data, return current productinfo");
 
@@ -76,7 +76,10 @@ Parse.Cloud.define('saveproduct', async (req) => {
 		query.limit(1000);
 		const results = await query.find();
 
+		console.log('>> found ' + results.length + ' products');
+
 		for (var i = 0; i < results.length; i++) {
+			console.log('>> result id ' + results[i].id);
 			var n = results[i].id.localeCompare(req.params.objectId);
 			if (n == 0) {
 				console.log('>> product found: ' + JSON.stringify(results[i]));
