@@ -65,12 +65,10 @@ Parse.Cloud.define('addproduct', async (req) => {
 
 Parse.Cloud.define('saveproduct', async (req) => {
 
-	let returnMessage = 'Error';
+	let returnMessage = 'Ok';
 
 	if (Object.keys(req.params).length > 0) {
 		console.log(">> productinfo json contains data, objectId: " + req.params.objectId);
-	} else {
-		console.log(">> productinfo json does not contain data, return current productinfo");
 
 		const query = new Parse.Query('ProductInfo');
 		query.limit(1000);
@@ -84,15 +82,23 @@ Parse.Cloud.define('saveproduct', async (req) => {
 			if (n == 0) {
 				console.log('>> product found: ' + JSON.stringify(results[i]));
 				//obj.set('exercise', results[i]);
+				results[i].set('amountInStock', req.params.amountInStock);
+				results[i].save().then(function(obj) {
+					console.log('>> saved');
+				},  function(err) {
+					console.log('>> error in saving: ' + err);
+					returnMessage = 'Failed';
+				});
 				break;
 			}
 		}
 
 		//returnMessage = JSON.stringify(results);
-
 		//console.log('>> return message: ' + returnMessage);
-		returnMessage = "Ok";
 		return returnMessage;
+
+	} else {
+		console.log(">> productinfo json does not contain data, return current productinfo");
 	}
 	return returnMessage;
 });
