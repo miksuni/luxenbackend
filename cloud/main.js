@@ -82,7 +82,7 @@ Parse.Cloud.define('saveproduct', async (req) => {
 			if (n == 0) {
 				console.log('>> product found: ' + JSON.stringify(results[i]));
 				//obj.set('exercise', results[i]);
-				results[i].set('amountInStock', req.params.amountInStock);
+				results[i].set('amountInStock', parseInt(req.params.amountInStock,10));
 				results[i].save().then(function(obj) {
 					console.log('>> saved');
 				},  function(err) {
