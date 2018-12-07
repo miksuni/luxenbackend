@@ -62,3 +62,34 @@ Parse.Cloud.define('addproduct', async (req) => {
 		console.log(">> productinfo json does not contain data");
 	}
 });
+
+Parse.Cloud.define('saveproduct', async (req) => {
+
+	let returnMessage = 'Error';
+
+	if (Object.keys(req.params).length > 0) {
+		console.log(">> productinfo json contains data");
+	} else {
+		console.log(">> productinfo json does not contain data, return current productinfo");
+
+		const query = new Parse.Query('ProductInfo');
+		query.limit(1000);
+		const results = await query.find();
+
+		for (var i = 0; i < results.length; i++) {
+			var n = results[i].id.localeCompare(req.params.objectId);
+			if (n == 0) {
+				console.log('>> product found: ' + JSON.stringify(results[i]));
+				//obj.set('exercise', results[i]);
+				break;
+			}
+		}
+
+		//returnMessage = JSON.stringify(results);
+
+		//console.log('>> return message: ' + returnMessage);
+		returnMessage = "Ok";
+		return returnMessage;
+	}
+	return returnMessage;
+});
