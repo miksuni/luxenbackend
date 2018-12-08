@@ -77,7 +77,7 @@ Parse.Cloud.define('saveproduct', async (req) => {
 		console.log('>> found ' + results.length + ' products');
 
 		for (var i = 0; i < results.length; i++) {
-			console.log('>> result id ' + results[i].id);
+			//console.log('>> result id ' + results[i].id);
 			var n = results[i].id.localeCompare(req.params.objectId);
 			if (n == 0) {
 				console.log('>> product found: ' + JSON.stringify(results[i]));
