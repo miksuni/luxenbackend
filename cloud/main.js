@@ -17,7 +17,7 @@ Parse.Cloud.define('productinfo', async (req) => {
 
 		returnMessage = JSON.stringify(results);
 
-		console.log('>> return message: ' + returnMessage);
+		//console.log('>> return message: ' + returnMessage);
 		return returnMessage;
 	}
 });
