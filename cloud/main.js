@@ -81,8 +81,15 @@ Parse.Cloud.define('saveproduct', async (req) => {
 			var n = results[i].id.localeCompare(req.params.objectId);
 			if (n == 0) {
 				console.log('>> product found: ' + JSON.stringify(results[i]));
-				//obj.set('exercise', results[i]);
-				results[i].set('amountInStock', parseInt(req.params.amountInStock,10));
+				if ('amountInStock' in req.params) {
+					results[i].set('amountInStock', parseInt(req.params.amountInStock,10));
+				}
+				if ('price' in req.params) {
+					results[i].set('price', parseInt(req.params.price,10));
+				}
+				if ('availableFromPublisher' in req.params) {
+					results[i].set('availableFromPublisher', req.params.availableFromPublisher.toLowerCase() == "true");
+				}
 				results[i].save().then(function(obj) {
 					console.log('>> saved');
 				},  function(err) {
