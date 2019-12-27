@@ -85,7 +85,7 @@ Parse.Cloud.define('saveproduct', async (req) => {
 					results[i].set('amountInStock', parseInt(req.params.amountInStock,10));
 				}
 				if ('price' in req.params) {
-					results[i].set('price', parseInt(req.params.price,10));
+					results[i].set('price', parseFloat(req.params.price));
 				}
 				if ('availableFromPublisher' in req.params) {
 					results[i].set('availableFromPublisher', req.params.availableFromPublisher.toLowerCase() == "true");
