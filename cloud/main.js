@@ -49,7 +49,7 @@ Parse.Cloud.define('addproduct', async (req) => {
 		}
 		if ('Hinta' in req.params) {
 			console.log('>>' + req.params.Hinta);
-			obj.set('price', parseInt(req.params.Hinta, 10));
+			obj.set('price', parseFloat(req.params.Hinta));
 		}
 		if ('Tilattavissa' in req.params) {
 			console.log('>>' + req.params.Tilattavissa);
@@ -96,6 +96,46 @@ Parse.Cloud.define('saveproduct', async (req) => {
 					console.log('>> error in saving: ' + err);
 					returnMessage = 'Failed';
 				});
+				break;
+			}
+		}
+
+		//returnMessage = JSON.stringify(results);
+		//console.log('>> return message: ' + returnMessage);
+		return returnMessage;
+
+	} else {
+		console.log(">> productinfo json does not contain data, return current productinfo");
+	}
+	return returnMessage;
+});
+
+Parse.Cloud.define('removeproduct', async (req) => {
+
+	let returnMessage = 'Ok';
+
+	if (Object.keys(req.params).length > 0) {
+		console.log(">> productinfo json contains data, objectId: " + req.params.objectId);
+
+		const query = new Parse.Query('ProductInfo');
+		query.limit(1000);
+		const results = await query.find();
+
+		console.log('>> found ' + results.length + ' products');
+
+		for (var i = 0; i < results.length; i++) {
+			//console.log('>> result id ' + results[i].id);
+			var n = results[i].id.localeCompare(req.params.objectId);
+			if (n == 0) {
+				console.log('>> product found: ' + JSON.stringify(results[i]));
+
+
+				//results[i].save().then(function(obj) {
+				//	console.log('>> saved');
+				//},  function(err) {
+				//	console.log('>> error in saving: ' + err);
+				//	returnMessage = 'Failed';
+				//});
 				break;
 			}
 		}
