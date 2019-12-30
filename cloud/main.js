@@ -36,23 +36,23 @@ Parse.Cloud.define('addproduct', async (req) => {
 			obj.set('ISBN', req.params.ISBN);
 		}
 		if ('productCode' in req.params) {
-			console.log('>>' + req.params.Tuotenro);
-			obj.set('productCode', req.params.Tuotenro);
+			console.log('>>' + req.params.productCode);
+			obj.set('productCode', req.params.productCode);
 		}
 		if ('productName' in req.params) {
-			console.log('>>' + req.params.Tuote);
-			obj.set('productName', req.params.Tuote);
+			console.log('>>' + req.params.productName);
+			obj.set('productName', req.params.productName);
 		}
 		if ('amountInStock' in req.params) {
-			console.log('>>' + req.params.Kpl);
-			obj.set('amountInStock', parseInt(req.params.Kpl, 10));
+			console.log('>>' + req.params.amountInStock);
+			obj.set('amountInStock', parseInt(req.params.amountInStock, 10));
 		}
 		if ('price' in req.params) {
-			console.log('>>' + req.params.Hinta);
-			obj.set('price', parseFloat(req.params.Hinta));
+			console.log('>>' + req.params.price);
+			obj.set('price', parseFloat(req.params.price));
 		}
 		if ('availableFromPublisher' in req.params) {
-			console.log('>>' + req.params.Tilattavissa);
+			console.log('>>' + req.params.availableFromPublisher);
 			obj.set('availableFromPublisher', req.params.Tilattavissa.toLowerCase() == "true");
 		}
 		obj.save().then(function(obj) {
