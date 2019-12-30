@@ -35,23 +35,23 @@ Parse.Cloud.define('addproduct', async (req) => {
 			console.log('>>' + req.params.ISBN);
 			obj.set('ISBN', req.params.ISBN);
 		}
-		if ('Tuotenro' in req.params) {
+		if ('productCode' in req.params) {
 			console.log('>>' + req.params.Tuotenro);
 			obj.set('productCode', req.params.Tuotenro);
 		}
-		if ('Tuote' in req.params) {
+		if ('productName' in req.params) {
 			console.log('>>' + req.params.Tuote);
 			obj.set('productName', req.params.Tuote);
 		}
-		if ('Kpl' in req.params) {
+		if ('amountInStock' in req.params) {
 			console.log('>>' + req.params.Kpl);
 			obj.set('amountInStock', parseInt(req.params.Kpl, 10));
 		}
-		if ('Hinta' in req.params) {
+		if ('price' in req.params) {
 			console.log('>>' + req.params.Hinta);
 			obj.set('price', parseFloat(req.params.Hinta));
 		}
-		if ('Tilattavissa' in req.params) {
+		if ('availableFromPublisher' in req.params) {
 			console.log('>>' + req.params.Tilattavissa);
 			obj.set('availableFromPublisher', req.params.Tilattavissa.toLowerCase() == "true");
 		}
