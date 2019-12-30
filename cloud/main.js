@@ -115,7 +115,7 @@ Parse.Cloud.define('removeproduct', async (req) => {
 	let returnMessage = 'Ok';
 
 	if (Object.keys(req.params).length > 0) {
-		console.log(">> productinfo json contains data, objectId: " + req.params.objectId);
+		console.log(">> removeproduct: productinfo json contains data, objectId: " + req.params.objectId);
 
 		const query = new Parse.Query('ProductInfo');
 		query.limit(1000);
@@ -128,14 +128,12 @@ Parse.Cloud.define('removeproduct', async (req) => {
 			var n = results[i].id.localeCompare(req.params.objectId);
 			if (n == 0) {
 				console.log('>> product found: ' + JSON.stringify(results[i]));
-
-
-				//results[i].save().then(function(obj) {
-				//	console.log('>> saved');
-				//},  function(err) {
-				//	console.log('>> error in saving: ' + err);
-				//	returnMessage = 'Failed';
-				//});
+				results[i].destroy().then(function(obj) {
+					console.log('>> removed');
+				},  function(err) {
+					console.log('>> error in removing: ' + err);
+					returnMessage = 'Failed';
+				});
 				break;
 			}
 		}
