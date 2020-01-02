@@ -55,8 +55,8 @@ httpServer.listen(port, function() {
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
 
-const ws = new WebSocket('wss://fierce-shelf-80455.herokuapp.com');
+//const ws = new WebSocket('wss://fierce-shelf-80455.herokuapp.com');
 
-ws.on('message', function incoming(data) {
-	  console.log(data);
-});
+//ws.on('message', function incoming(data) {
+//	  console.log(data);
+//});
