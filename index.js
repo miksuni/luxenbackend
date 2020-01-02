@@ -4,6 +4,7 @@
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
+const WebSocket = require('ws');
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
@@ -53,3 +54,9 @@ httpServer.listen(port, function() {
 
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
+
+const ws = new WebSocket('wss://fierce-shelf-80455.herokuapp.com');
+
+ws.on('message', function incoming(data) {
+	  console.log(data);
+});
