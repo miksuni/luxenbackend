@@ -13,6 +13,7 @@ Parse.Cloud.define('productinfo', async (req) => {
 	} else {
 		console.log(">> productinfo json does not contain data, return current productinfo");
 		console.log(">> moduletest: " + PT.myDateTime());
+		PT.startWS();
 
 		const query = new Parse.Query('ProductInfo');
 		query.limit(1000);
