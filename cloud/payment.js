@@ -1,3 +1,5 @@
+const WebSocket = require('ws')
+
 exports.myDateTime = function () {
   return Date();
 };

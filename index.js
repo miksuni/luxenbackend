@@ -4,7 +4,7 @@
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
-const WebSocket = require('ws');
+//const WebSocket = require('ws');
 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 
