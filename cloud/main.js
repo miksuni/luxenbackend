@@ -10,9 +10,9 @@ Parse.Cloud.define('productinfo', async (req) => {
 
 	if (Object.keys(req.params).length > 0) {
 		console.log(">> productinfo json contains data");
-		console.log(">> moduletest: " /*+ PT.myDateTime()*/);
 	} else {
 		console.log(">> productinfo json does not contain data, return current productinfo");
+		console.log(">> moduletest: " /*+ PT.myDateTime()*/);
 
 		const query = new Parse.Query('ProductInfo');
 		query.limit(1000);
