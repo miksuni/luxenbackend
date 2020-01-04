@@ -1,3 +1,5 @@
+var PT = require('./payment.js');
+
 Parse.Cloud.define('hello', function(req, res) {
   return 'Hi';
 });
