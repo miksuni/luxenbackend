@@ -4,6 +4,13 @@ Parse.Cloud.define('hello', function(req, res) {
   return 'Hi';
 });
 
+Parse.Cloud.define('connect_to_pt', async (req) => {
+	let returnMessage = 'Ok';
+	console.log(">> connect_to_pt at: " + PT.myDateTime());;
+	PT.startWS();
+	return returnMessage;
+});
+
 Parse.Cloud.define('productinfo', async (req) => {
 
 	let returnMessage = 'Ok';
@@ -12,8 +19,6 @@ Parse.Cloud.define('productinfo', async (req) => {
 		console.log(">> productinfo json contains data");
 	} else {
 		console.log(">> productinfo json does not contain data, return current productinfo");
-		console.log(">> moduletest: " + PT.myDateTime());
-		PT.startWS();
 
 		const query = new Parse.Query('ProductInfo');
 		query.limit(1000);
