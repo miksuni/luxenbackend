@@ -11,6 +11,20 @@ Parse.Cloud.define('connect_to_pt', async (req) => {
 	return returnMessage;
 });
 
+Parse.Cloud.define('cashiers', async (req) => {
+
+	let returnMessage = 'Ok';
+
+	const query = new Parse.Query('Cashier');
+	query.limit(1000);
+	const results = await query.find();
+
+	returnMessage = JSON.stringify(results);
+
+	console.log('>> return message: ' + returnMessage);
+	return returnMessage;
+});
+
 Parse.Cloud.define('productinfo', async (req) => {
 
 	let returnMessage = 'Ok';
