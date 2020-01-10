@@ -227,6 +227,10 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 		}
 		obj.save().then(function(obj) {
 			console.log('>> Receipt saved');
+			
+			console.log('>> Object id: ' + obj.id);
+			
+			
 		}, function(err) { console.log(err); });
 	} else {
 		console.log(">> Receipt json does not contain data");
