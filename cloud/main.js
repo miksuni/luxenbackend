@@ -227,10 +227,16 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 		}
 		obj.save().then(function(obj) {
 			console.log('>> Receipt saved');
-			
 			console.log('>> Object id: ' + obj.id);
-			
-			
+			for (i = 0; i < req.params.productList.length; i++) {
+			var itemobj = new Parse.Object('SoldItem');
+				itemobj.set('receipt', obj);
+				itemobj.set('productName', req.params.productList[i].productName);
+				itemobj.set('price', req.params.productList[i].price);
+				itemobj.save().then(function(itemobj) {
+					
+				}, function(err) { console.log('itemobj save error' + err); });
+			}
 		}, function(err) { console.log(err); });
 	} else {
 		console.log(">> Receipt json does not contain data");
