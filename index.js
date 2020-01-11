@@ -66,7 +66,7 @@ app.get('/test', function(req, res) {
 //});
 
 // This will enable the Live Query real-time server
-ParseServer.createLiveQueryServer(httpServer);
+//ParseServer.createLiveQueryServer(httpServer);
 
 //const ws = new WebSocket('wss://fierce-shelf-80455.herokuapp.com');
 
