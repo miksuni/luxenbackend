@@ -2,6 +2,7 @@
 // compatible API routes.
 
 var express = require('express');
+const basicAuth = require('express-basic-auth');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 //const WebSocket = require('ws');
@@ -27,6 +28,12 @@ var api = new ParseServer({
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 var app = express();
+
+app.use(basicAuth({
+    users: { 'someuser': 'somepassword' },
+    challenge: true,
+    realm: 'Imb4T3st4pp',
+}));
 
 // Serve static assets from the /public folder
 app.use('/public', express.static(path.join(__dirname, '/public')));
