@@ -23,12 +23,11 @@ var api = new ParseServer({
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   },
   auth: {
-	  "google": {
-		    "id": "googleid",
-		    "id_token": "googletoken",
-		    "access_token": "accesstoken"
-		  }
-  }
+	    twitter: {
+	     consumer_key: "", // REQUIRED
+	     consumer_secret: "" // REQUIRED
+	   },
+	  }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
 // If you wish you require them, you can set them as options in the initialization above:
