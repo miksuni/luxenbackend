@@ -234,10 +234,11 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 				itemobj.set('productName', req.params.productList[i].productName);
 				itemobj.set('price', req.params.productList[i].price);
 				itemobj.save().then(function(itemobj) {
-					var productInfo = Parse.Object.extend("ProductInfo");
-					var query = new Parse.Query(productInfo);
+					console.log('--productInfo name '  + req.params.productList[i].productName);
+					//var productInfo = Parse.Object.extend("ProductInfo");
+					//var query = new Parse.Query(productInfo);
 					console.log('--productInfo obj id '  + req.params.productList[i].id);
-					query.get(req.params.productList[i].id)
+					/*query.get(req.params.productList[i].id)
 					.then((productInfo) => {
 						console.log('-- product found');
 						const amount = productInfo.get('amountInStock');
@@ -245,7 +246,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 						productInfo.save().then(function(productInfo) {
 							console.log('amount updated');
 						}, function(err) { console.log('--productInfo save error' + err); });
-					}, function(err) { console.log('--productInfo not found for '  + req.params.productList[i].id + " " + err); })
+					}, function(err) { console.log('--productInfo not found for '  + req.params.productList[i].id + " " + err); })*/
 				}, function(err) { console.log('itemobj save error' + err); });
 			}
 		}, function(err) { console.log(err); });
