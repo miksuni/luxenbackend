@@ -242,7 +242,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 					var productInfo = Parse.Object.extend("ProductInfo");
 					var query = new Parse.Query(productInfo);
 					console.log('>> product found 2: ' + productName + ", " + itemId);
-					console.log('>> product found x: ' + ", " + itemobj.itemobj.get(referenceObject));
+					console.log('>> product found x: ' + ", " + itemobj.get(referenceObject));
 					console.log('>> product: ' + JSON.stringify(itemobj));
 					query.get(itemobj.get(referenceObject))
 					.then((productInfo) => {
