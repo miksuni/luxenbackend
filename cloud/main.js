@@ -229,12 +229,22 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 			console.log('>> Receipt saved');
 			console.log('>> Object id: ' + obj.id);
 			for (i = 0; i < req.params.productList.length; i++) {
-			var itemobj = new Parse.Object('SoldItem');
+				var itemobj = new Parse.Object('SoldItem');
 				itemobj.set('receipt', obj);
 				itemobj.set('productName', req.params.productList[i].productName);
 				itemobj.set('price', req.params.productList[i].price);
 				itemobj.save().then(function(itemobj) {
-					
+					var productInfo = Parse.Object.extend("ProductInfo");
+					var query = new Parse.Query(productInfo);
+					query.get(obj.id)
+					.then((productInfo) => {
+						console.log('-- product found');
+						const amount = productInfo.get('amountInStock');
+						productInfo.set('amountInStock', amount - 1);
+						productInfo.save().then(function(productInfo) {
+							console.log('amount updated');
+						}, function(err) { console.log('--productInfo save error' + err); });
+					})
 				}, function(err) { console.log('itemobj save error' + err); });
 			}
 		}, function(err) { console.log(err); });
@@ -242,65 +252,3 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 		console.log(">> Receipt json does not contain data");
 	}
 });
-
-/*Parse.Cloud.define('saveSoldItems', async (req) => {
-
-	let returnMessage = 'Ok';
-
-	if (Object.keys(req.params).length > 0) {
-		console.log(">> saveReceipt: json contains data");
-
-		var obj = new Parse.Object('Receipt');
-
-		if ('receiptNr' in req.params) {
-			console.log('>>' + req.params.receiptNr);
-			obj.set('receiptNr', req.params.receiptNr);
-		}
-		obj.set('date', new Date());
-		if ('cashier' in req.params) {
-			console.log('>>' + req.params.cashier);
-			obj.set('cashier', req.params.cashier);
-		}
-		if ('totalSum' in req.params) {
-			console.log('>>' + req.params.totalSum);
-			obj.set('totalSum', parseInt(req.params.totalSum, 10));
-		}
-		if ('paymentMethod1' in req.params) {
-			console.log('>>' + req.params.paymentMethod1);
-			const query = new Parse.Query('PaymentMethod');
-			const results = await query.find();
-			var i = 0;
-			for (i; i < results.length; i++) {
-				console.log('>> iterate payment methods...');
-				var n = results[i].id.localeCompare(req.params.paymentMethod1);
-				if (n == 0) {
-					console.log('>> paymentMethod1 found');
-					//obj.set('paymentMethod1', results[i]);
-					obj.set('paymentMethod1Fi', results[i].methodFi);
-					break;
-				}
-			}			
-		}
-		if ('paymentMethod2' in req.params) {
-			console.log('>>' + req.params.paymentMethod1);
-			const query = new Parse.Query('PaymentMethod');
-			const results = await query.find();
-			var i = 0;
-			for (i; i < results.length; i++) {
-				console.log('>> iterate payment methods...');
-				var n = results[i].id.localeCompare(req.params.paymentMethod1);
-				if (n == 0) {
-					console.log('>> paymentMethod2 found');
-					//obj.set('paymentMethod2', results[i]);
-					obj.set('paymentMethod2Fi', results[i].methodFi);
-					break;
-				}
-			}			
-		}
-		obj.save().then(function(obj) {
-			console.log('>> Receipt saved');
-		}, function(err) { console.log(err); });
-	} else {
-		console.log(">> Receipt json does not contain data");
-	}
-});*/
