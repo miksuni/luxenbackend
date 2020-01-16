@@ -234,10 +234,14 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 				itemobj.set('productName', req.params.productList[i].productName);
 				itemobj.set('price', req.params.productList[i].price);
 				var itemName = req.params.productList[i].productName;
+				var itemId = req.params.productList[i].id;
 				console.log('--productInfo name 1 '  + req.params.productList[i].productName);
 				console.log('--productInfo name 2 '  + itemName);
+				console.log('--productInfo id 1 '  + req.params.productList[i].id);
+				console.log('--productInfo id 2 '  + itemId);
 				itemobj.save().then(function(itemobj) {
 					console.log('--productInfo name 3 '  + itemName);
+					console.log('--productInfo id 3 '  + itemId);
 					//var productInfo = Parse.Object.extend("ProductInfo");
 					//var query = new Parse.Query(productInfo);
 					//console.log('--productInfo obj id '  + req.params.productList[i].id);
