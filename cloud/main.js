@@ -233,25 +233,18 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 				itemobj.set('receipt', obj);
 				itemobj.set('productName', req.params.productList[i].productName);
 				itemobj.set('price', req.params.productList[i].price);
-				var itemName = req.params.productList[i].productName;
 				var itemId = req.params.productList[i].objectId;
-				console.log('--productInfo name 1 '  + req.params.productList[i].productName);
-				console.log('--productInfo name 2 '  + itemName);
-				console.log('--productInfo id 1 '  + req.params.productList[i].objectId);
-				console.log('--productInfo id 2 '  + itemId);
+				var quantity = req.params.productList[i].quantity;
 				itemobj.save().then(function(itemobj) {
-					console.log('--productInfo name 3 '  + itemName);
-					console.log('--productInfo id 3 '  + itemId);
 					var productInfo = Parse.Object.extend("ProductInfo");
 					var query = new Parse.Query(productInfo);
-					console.log('--productInfo obj id '  + itemId);
 					query.get(itemId)
 					.then((productInfo) => {
-						console.log('-- product found');
+						console.log('>> product found');
 						const amount = productInfo.get('amountInStock');
-						productInfo.set('amountInStock', amount - 1);
+						productInfo.set('amountInStock', amount - quantity);
 						productInfo.save().then(function(productInfo) {
-							console.log('amount updated');
+							console.log('>> amount decreased with ' + quantity.toString());
 						}, function(err) { console.log('--productInfo save error' + err); });
 					}, function(err) { console.log('--productInfo not found for '  + itemId + " " + err); });
 				}, function(err) { console.log('itemobj save error' + err); });
