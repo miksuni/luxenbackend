@@ -247,7 +247,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 						console.log('>>> productObjectId: ' + itemobj.get('productObjectId'));
 						//productInfo.set('amountInStock', productInfo.get('amountInStock') - 1);
 						const amount = parseInt(productInfo.get('amountInStock'), 10);
-						const amount = parseInt(itemobj.get('quantity'), 10);
+						const quantity = parseInt(itemobj.get('quantity'), 10);
 						console.log('>> amount: '+ amount);
 						console.log('>> itemobj.quantity: ' + itemobj.get('quantity'));
 						productInfo.set('amountInStock', amount - quantity);
