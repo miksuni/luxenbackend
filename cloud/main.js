@@ -235,6 +235,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 				itemobj.set('price', req.params.productList[i].price);
 				itemobj.set('productInfo', req.params.productList[i]);
 				itemobj.set('productObjectId', req.params.productList[i].objectId);
+				itemobj.set('quantity', req.params.productList[i].quantity);
 				console.log('>> productName: ' + itemobj.get('productName'));
 				console.log('>> productObjectId: ' + itemobj.get('productObjectId'));
 				itemobj.save().then(function(itemobj) {
@@ -242,11 +243,9 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 					var query = new Parse.Query(productInfo);
 					query.get(itemobj.get('productObjectId'))
 					.then((productInfo) => {
-						console.log('>> productName: ' + itemobj.get('productName'));
-						console.log('>> productObjectId: ' + itemobj.get('productObjectId'));
-						const amount = productInfo.get('amountInStock');
-						const quantity = productInfo.get('quantity');
-						productInfo.set('amountInStock', amount - quantity);
+						console.log('>>> productName: ' + itemobj.get('productName'));
+						console.log('>>> productObjectId: ' + itemobj.get('productObjectId'));
+						productInfo.set('amountInStock', productInfo.get('amountInStock') - 1);
 						productInfo.save().then(function(productInfo) {
 							console.log('>> amount decreased');
 						}, function(err) { console.log('--productInfo save error' + err); });
