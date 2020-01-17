@@ -234,26 +234,23 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 				itemobj.set('productName', req.params.productList[i].productName);
 				itemobj.set('price', req.params.productList[i].price);
 				itemobj.set('productInfo', req.params.productList[i]);
-				//var productName = req.params.productList[i].productName; // just for logging
-				//var itemId = req.params.productList[i].objectId;
-				//var quantity = req.params.productList[i].quantity;
-				console.log('>> product found 1: ' + req.params.productList[i].productName);
+				itemobj.set('productObjectId', req.params.productList[i].objectId);
+				console.log('>> productName: ' + itemobj.get('productName'));
+				console.log('>> productObjectId: ' + itemobj.get('productObjectId'));
 				itemobj.save().then(function(itemobj) {
 					var productInfo = Parse.Object.extend("ProductInfo");
 					var query = new Parse.Query(productInfo);
-					//console.log('>> product found 2: ' + productName + ", " + itemId);
-					//console.log('>> product found x: ' + ", " + itemobj.referenceObject);
-					//console.log('>> product: ' + JSON.stringify(itemobj));
-					query.get(itemobj.productInfo)
+					query.get(itemobj.get('productObjectId'))
 					.then((productInfo) => {
-						//console.log('>> product found 3: ' + productName + ", " + itemId);
-						//console.log('>> product found 3: ' + productName + ", " + itemobj.referenceObject);
+						console.log('>> productName: ' + itemobj.get('productName'));
+						console.log('>> productObjectId: ' + itemobj.get('productObjectId'));
 						const amount = productInfo.get('amountInStock');
+						const quantity = productInfo.get('quantity');
 						productInfo.set('amountInStock', amount - quantity);
 						productInfo.save().then(function(productInfo) {
 							console.log('>> amount decreased with ' + quantity.toString());
 						}, function(err) { console.log('--productInfo save error' + err); });
-					}, function(err) { console.log('--productInfo not found for '  + itemId + " " + err); });
+					}, function(err) { console.log('--productInfo not found'); });
 				}, function(err) { console.log('itemobj save error' + err); });
 			}
 		}, function(err) { console.log(err); });
