@@ -233,7 +233,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 				itemobj.set('receipt', obj);
 				itemobj.set('productName', req.params.productList[i].productName);
 				itemobj.set('price', req.params.productList[i].price);
-				itemobj.set('productInfo', req.params.productList[i]);
+				//itemobj.set('productInfo', req.params.productList[i]);
 				itemobj.set('productObjectId', req.params.productList[i].objectId);
 				itemobj.set('quantity', req.params.productList[i].quantity);
 				itemobj.save().then(function(itemobj) {
