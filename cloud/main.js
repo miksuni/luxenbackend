@@ -28,11 +28,12 @@ Parse.Cloud.define('send_email', async (req) => {
 	const TOKEN_PATH = 'token.json';
 
 	// Load client secrets from a local file.
-	fs.readFile('credentials.json', (err, content) => {
-	  if (err) return console.log('Error loading client secret file:', err);
+	//fs.readFile('credentials.json', (err, content) => {
+	//  if (err) return console.log('Error loading client secret file:', err);
 	  // Authorize a client with credentials, then call the Gmail API.
-	  authorize(JSON.parse(content), sendMessage);
-	});
+	//  authorize(JSON.parse(content), sendMessage);
+	//});
+	authorize(JSON.parse(process.env.GOOGLE_CREDENTIALS), sendMessage);
 
 	/**
 	 * Create an OAuth2 client with the given credentials, and then execute the
@@ -46,9 +47,9 @@ Parse.Cloud.define('send_email', async (req) => {
 	      client_id, client_secret, redirect_uris[0]);
 
 	  // Check if we have previously stored a token.
-	  fs.readFile(TOKEN_PATH, (err, token) => {
-	    if (err) return getNewToken(oAuth2Client, callback);
-	    oAuth2Client.setCredentials(JSON.parse(token));
+	  //fs.readFile(TOKEN_PATH, (err, token) => {
+	  //  if (err) return getNewToken(oAuth2Client, callback);
+	    oAuth2Client.setCredentials(JSON.parse(process.env.GOOGLE_TOKEN));
 	    callback(oAuth2Client);
 	  });
 	}
