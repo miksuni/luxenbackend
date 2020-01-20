@@ -304,7 +304,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 		}
 		if ('paymentMethod1' in req.params.total) {
 			console.log('>>' + req.params.total.paymentMethod1);
-			if (req.params.total.paymentMethod1.lengh > 0) {
+			if (req.params.total.paymentMethod1.length > 0) {
 				obj.set('paymentMethod1Fi', req.params.total.paymentMethod1);
 			}
 //			const query = new Parse.Query('PaymentMethod');
@@ -323,7 +323,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 		}
 		if ('paymentMethod2' in req.params.total) {
 			console.log('>>' + req.params.total.paymentMethod2);
-			if (req.params.total.paymentMethod2.lengh > 0) {
+			if (req.params.total.paymentMethod2.length > 0) {
 				obj.set('paymentMethod2Fi', req.params.total.paymentMethod2);
 			}
 //			const query = new Parse.Query('PaymentMethod');
