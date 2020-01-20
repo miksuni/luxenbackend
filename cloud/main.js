@@ -300,7 +300,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 		}
 		if ('totalSum' in req.params.total) {
 			console.log('>>' + req.params.total.totalSum);
-			obj.set('totalSum', parseInt(req.params.total.totalSum, 10));
+			obj.set('totalSum', parseFloat(req.params.total.totalSum));
 		}
 		if ('paymentMethod1' in req.params.total) {
 			console.log('>>' + req.params.total.paymentMethod1);
