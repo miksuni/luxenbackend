@@ -105,15 +105,20 @@ Parse.Cloud.define('send_email', async (req) => {
 		}
 	
 		function makeMessage() {
-			var str = "Test";
+			var str = "";
 			console.log('>> product count: ' + req.params.products.length);
-			console.log('>> product: '+ JSON.stringify(req.params.products[0]));
+			for (i = 0; i < req.params.products.length; i++) {
+				str += req.params.products[i].productName;
+				str += '\t';
+				str += req.params.products[i].amountInStock;
+				str += '\n';
+			}
 			return str;
 		}
 		
 		function sendMessage(auth) {
 			const gmail = google.gmail({version: 'v1', auth});
-		    var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Tuotesaldoilmoitustesti', makeMessage());
+		    var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Tuotteita loppumassa', makeMessage());
 		    gmail.users.messages.send({
 		        auth: auth,
 		        userId: 'me',
