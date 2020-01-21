@@ -106,8 +106,8 @@ Parse.Cloud.define('send_email', async (req) => {
 	
 		function makeMessage() {
 			var str = "Test";
-			console.log('>> product count: ' + req.params.length);
-			console.log('>> product: '+ JSON.stringify(req.params[0]));
+			console.log('>> product count: ' + req.params.products.length);
+			console.log('>> product: '+ JSON.stringify(req.params.products[0]));
 			return str;
 		}
 		
