@@ -386,43 +386,43 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 	} else {
 		console.log(">> Receipt json does not contain data");
 	}
-	
-	Parse.Cloud.define('addchat', async (req) => {
+});
 
-		let returnMessage = 'Ok';
+Parse.Cloud.define('addchat', async (req) => {
 
-		if (Object.keys(req.params).length > 0) {
-			console.log(">> addproduct: json contains data");
+	let returnMessage = 'Ok';
 
-			var obj = new Parse.Object('Chat');
+	if (Object.keys(req.params).length > 0) {
+		console.log(">> addproduct: json contains data");
 
-			if ('from' in req.params) {
-				console.log('>>' + req.params.from);
-				obj.set('from', req.params.from);
-			}
-			if ('message' in req.params) {
-				console.log('>>' + req.params.message);
-				obj.set('message', req.params.message);
-			}
-			obj.save().then(function(obj) {
-				console.log('>> chat saved');
-			}, function(err) { console.log(err); });
-		} else {
-			console.log(">> chat json does not contain data");
+		var obj = new Parse.Object('Chat');
+
+		if ('from' in req.params) {
+			console.log('>>' + req.params.from);
+			obj.set('from', req.params.from);
 		}
-	});
-	
-	Parse.Cloud.define('chat', async (req) => {
+		if ('message' in req.params) {
+			console.log('>>' + req.params.message);
+			obj.set('message', req.params.message);
+		}
+		obj.save().then(function(obj) {
+			console.log('>> chat saved');
+		}, function(err) { console.log(err); });
+	} else {
+		console.log(">> chat json does not contain data");
+	}
+});
 
-		let returnMessage = 'Ok';
+Parse.Cloud.define('chat', async (req) => {
 
-		const query = new Parse.Query('Chat');
-		query.limit(1000);
-		const results = await query.find();
+	let returnMessage = 'Ok';
 
-		returnMessage = JSON.stringify(results);
+	const query = new Parse.Query('Chat');
+	query.limit(1000);
+	const results = await query.find();
 
-		console.log('>> return message: ' + returnMessage);
-		return returnMessage;
-	});
+	returnMessage = JSON.stringify(results);
+
+	console.log('>> return message: ' + returnMessage);
+	return returnMessage;
 });
