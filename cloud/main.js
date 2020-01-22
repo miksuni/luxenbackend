@@ -386,4 +386,43 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 	} else {
 		console.log(">> Receipt json does not contain data");
 	}
+	
+	Parse.Cloud.define('addchat', async (req) => {
+
+		let returnMessage = 'Ok';
+
+		if (Object.keys(req.params).length > 0) {
+			console.log(">> addproduct: json contains data");
+
+			var obj = new Parse.Object('Chat');
+
+			if ('From' in req.params) {
+				console.log('>>' + req.params.From);
+				obj.set('From', req.params.From);
+			}
+			if ('Message' in req.params) {
+				console.log('>>' + req.params.Message);
+				obj.set('Message', req.params.Message);
+			}
+			obj.save().then(function(obj) {
+				console.log('>> chat saved');
+			}, function(err) { console.log(err); });
+		} else {
+			console.log(">> chat json does not contain data");
+		}
+	});
+	
+	Parse.Cloud.define('chat', async (req) => {
+
+		let returnMessage = 'Ok';
+
+		const query = new Parse.Query('Chat');
+		query.limit(1000);
+		const results = await query.find();
+
+		returnMessage = JSON.stringify(results);
+
+		console.log('>> return message: ' + returnMessage);
+		return returnMessage;
+	});
 });
