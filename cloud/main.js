@@ -396,13 +396,13 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 
 			var obj = new Parse.Object('Chat');
 
-			if ('From' in req.params) {
-				console.log('>>' + req.params.From);
-				obj.set('From', req.params.From);
+			if ('from' in req.params) {
+				console.log('>>' + req.params.from);
+				obj.set('from', req.params.from);
 			}
-			if ('Message' in req.params) {
-				console.log('>>' + req.params.Message);
-				obj.set('Message', req.params.Message);
+			if ('message' in req.params) {
+				console.log('>>' + req.params.message);
+				obj.set('message', req.params.message);
 			}
 			obj.save().then(function(obj) {
 				console.log('>> chat saved');
