@@ -201,7 +201,7 @@ Parse.Cloud.define('addproduct', async (req) => {
 		}
 		if ('availableFromPublisher' in req.params) {
 			console.log('>>' + req.params.availableFromPublisher);
-			obj.set('availableFromPublisher', req.params.availableFromPublisher.toLowerCase() == "true");
+			obj.set('availableFromPublisher', req.params.availableFromPublisher);
 		}
 		obj.save().then(function(obj) {
 			console.log('>> productInfo saved');
