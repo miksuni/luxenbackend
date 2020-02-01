@@ -478,7 +478,7 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 	console.log('step 1');
 	stateobject = await statequery.first();
 	console.log('step 2');
-	stateobject.receiptNr =  req.params.receiptData.receiptNr;
+	stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
 	console.log('step 3');
 	stateobject.save().then(function(stateobject) {
 		console.log('>> current state updated');
