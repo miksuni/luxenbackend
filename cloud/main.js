@@ -399,9 +399,9 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 			
 			var obj = new Parse.Object('Receipt');
 			
-			if ('receiptNr' in req.params.req.params.receiptData) {
-				console.log('>>' + req.params.req.params.receiptData.receiptNr);
-				obj.set('receiptNr', req.params.req.params.receiptData.receiptNr);
+			if ('receiptNr' in req.params.receiptData) {
+				console.log('>>' + req.params.receiptData.receiptNr);
+				obj.set('receiptNr', req.params.receiptData.receiptNr);
 			}
 			obj.set('date', new Date());
 			if ('paymentMethod' in req.params.receiptData.items[i]) {
