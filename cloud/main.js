@@ -393,6 +393,12 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 
 	let returnMessage = 'Ok';
 
+	for (var i = 0; i < req.params.receiptData.items.length; i++) {
+		if (req.params.receiptData.items[i].sum > 0) {
+			console.log(">> payment method: " + i);
+		}
+	}
+	
 	if (Object.keys(req.params).length > 0) {
 		console.log(">> addproduct: json contains data: " + JSON.stringify(req.params));
 	} else {
