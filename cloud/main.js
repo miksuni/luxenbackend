@@ -388,6 +388,19 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 	}
 });
 
+
+Parse.Cloud.define('save_purchase_data', async (req) => {
+
+	let returnMessage = 'Ok';
+
+	if (Object.keys(req.params).length > 0) {
+		console.log(">> addproduct: json contains data: " + JSON.stringify(req.params));
+	} else {
+		console.log(">> addproduct json does not contain data");
+	}
+});
+
+
 Parse.Cloud.define('addchat', async (req) => {
 
 	let returnMessage = 'Ok';
