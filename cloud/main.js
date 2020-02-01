@@ -170,6 +170,27 @@ Parse.Cloud.define('productinfo', async (req) => {
 	}
 });
 
+Parse.Cloud.define('receipts', async (req) => {
+
+	let returnMessage = 'Ok';
+
+	const query = new Parse.Query('Receipt');
+	query.limit(1000);
+	const results = await query.find();
+    console.log('----> receipts');
+	for (var i = 0; i < results.lenght; i++) {
+		var receiptDate = results[i].get('date');
+		var currentDate = new Date();
+		if (receiptDate.getDate() == currentDate.getDate()) {
+			console.log('todays cashier: ' + results[i].cashier);
+		}
+	}
+	//returnMessage = JSON.stringify(results);
+
+	//console.log('>> return message: ' + returnMessage);
+	return returnMessage;
+});
+
 Parse.Cloud.define('addproduct', async (req) => {
 
 	let returnMessage = 'Ok';
@@ -296,6 +317,7 @@ Parse.Cloud.define('removeproduct', async (req) => {
 	return returnMessage;
 });
 
+/*
 Parse.Cloud.define('saveReceipt', async (req) => {
 
 	let returnMessage = 'Ok';
@@ -387,7 +409,7 @@ Parse.Cloud.define('saveReceipt', async (req) => {
 		console.log(">> Receipt json does not contain data");
 	}
 });
-
+*/
 
 Parse.Cloud.define('save_purchase_data', async (req) => {
 
@@ -455,7 +477,7 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 		itemobj.set('receiptNr', req.params.receiptData.receiptNr);
 		itemobj.set('productName', req.params.productList[i].productName);
 		itemobj.set('price', req.params.productList[i].price);
-		itemobj.set('productInfo', req.params.productList[i]);
+		//itemobj.set('productInfo', req.params.productList[i]);
 		itemobj.set('productObjectId', req.params.productList[i].objectId);
 		itemobj.set('quantity', req.params.productList[i].quantity);
 		itemobj.save().then(function(itemobj) {
