@@ -104,7 +104,7 @@ Parse.Cloud.define('send_email', async (req) => {
 		        return encodedMail;
 		}
 	
-		function makeMessage() {
+		function makeOrderMessage() {
 			var str = "";
 			console.log('>> product count: ' + req.params.products.length);
 			for (i = 0; i < req.params.products.length; i++) {
@@ -116,9 +116,37 @@ Parse.Cloud.define('send_email', async (req) => {
 			return str;
 		}
 		
+		function makeReportMessage() {
+			var currentDate = new Date();
+			var str = "Tilitysraportti " + currentDate.toString();
+			str += '\n';
+			str += '\n';
+			console.log('>> giftCard1: ' + req.params.giftCard1);
+			console.log('>> giftCard2: ' + req.params.giftCard2);
+			console.log('>> cash: ' + req.params.cash);
+			console.log('>> card: ' + req.params.card);
+
+			str += 'Maksukorttiostojen määrä: ';
+			str += '\t';
+			str += req.params.card.toString();
+			str += '\n';
+			str += 'Käteisostojen määrä: ';
+			str += '\t';
+			str += req.params.cash.toString();
+			str += '\n';
+			str += 'Lahden ry:n lahjakorttiostojen määrä: ';
+			str += '\t';
+			str += req.params.giftCard1.toString();
+			str += '\n';
+			str += '\n';
+			str += 'Viesti on lähetetty julkaisumyynnin kassajärjestelmästä automaattisesti.'
+			return str;
+		}
+		
 		function sendMessage(auth) {
 			const gmail = google.gmail({version: 'v1', auth});
-		    var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Tuotteita loppumassa', makeMessage());
+		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Tuotteita loppumassa', makeOrderMessage());
+		    var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyynnin päivänpäätös', makeReportMessage());
 		    gmail.users.messages.send({
 		        auth: auth,
 		        userId: 'me',
