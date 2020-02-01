@@ -404,27 +404,46 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 				obj.set('receiptNr', req.params.receiptData.receiptNr);
 			}
 			obj.set('date', new Date());
-			if ('receiptNr' in req.params.receiptData) {
-				console.log('>>' + req.params.receiptData.receiptNr);
-				obj.set('receiptNr', req.params.receiptData.receiptNr);
-			}			
+			if ('cashier' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].cashier);
+				obj.set('cashier', req.params.receiptData.items[i].cashier);
+			}
 			if ('paymentMethod' in req.params.receiptData.items[i]) {
 				console.log('>>' + req.params.receiptData.items[i].paymentMethod);
 				obj.set('paymentMethod', req.params.receiptData.items[i].paymentMethod);
-			}
+			}			
 			if ('sum' in req.params.receiptData.items[i]) {
 				console.log('>>' + req.params.receiptData.items[i].sum);
 				obj.set('totalSum', req.params.receiptData.items[i].sum);
 			}
-			
-			//if ('cashier' in req.params.total) {
-			//	console.log('>>' + req.params.total.cashier);
-			//	obj.set('cashier', req.params.total.cashier);
+			if ('giftCard1Type' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].giftCard1Type);
+				obj.set('giftCard1Type', req.params.receiptData.items[i].giftCard1Type);
+			}
+			if ('receiver' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].receiver);
+				obj.set('receiver', req.params.receiptData.items[i].receiver);
+			}
+			if ('originator' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].originator);
+				obj.set('originator', req.params.receiptData.items[i].originator);
+			}
+			if ('originator' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].originator);
+				obj.set('originator', req.params.receiptData.items[i].originator);
+			}
+			//if ('givenDate' in req.params.receiptData.items[i]) {
+			//	console.log('>>' + req.params.receiptData.items[i].givenDate);
+			//	obj.set('givenDate', req.params.receiptData.items[i].givenDate);
 			//}
-			//if ('totalSum' in req.params.total) {
-			//	console.log('>>' + req.params.total.totalSum);
-			//	obj.set('totalSum', parseFloat(req.params.total.totalSum));
-			//}
+			if ('valueBefore' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].valueBefore);
+				obj.set('valueBefore', req.params.receiptData.items[i].valueBefore);
+			}
+			if ('valueAfter' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].valueAfter);
+				obj.set('valueAfter', req.params.receiptData.items[i].valueAfter);
+			}
 			
 			obj.save().then(function(obj) {
 				console.log('>> Receipt saved');
