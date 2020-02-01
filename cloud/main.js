@@ -451,7 +451,7 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 	for (i = 0; i < req.params.productList.length; i++) {
 		console.log('>> found item');
 		var itemobj = new Parse.Object('SoldItem');
-		//itemobj.set('receipt', obj);
+		itemobj.set('receipt', obj);
 		itemobj.set('receiptNr', req.params.receiptData.receiptNr);
 		itemobj.set('productName', req.params.productList[i].productName);
 		itemobj.set('price', req.params.productList[i].price);
