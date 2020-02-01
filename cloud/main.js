@@ -395,7 +395,33 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 
 	for (var i = 0; i < req.params.receiptData.items.length; i++) {
 		if (req.params.receiptData.items[i].sum > 0) {
-			console.log(">> payment method: " + i);
+			console.log(">> payment method: " + req.params.receiptData.items[i].paymentMethod);
+			
+			var obj = new Parse.Object('Receipt');
+			
+			if ('receiptNr' in req.params.req.params.receiptData) {
+				console.log('>>' + req.params.req.params.receiptData.receiptNr);
+				obj.set('receiptNr', req.params.req.params.receiptData.receiptNr);
+			}
+			obj.set('date', new Date());
+			if ('paymentMethod' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].paymentMethod);
+				obj.set('paymentMethod', req.params.receiptData.items[i].paymentMethod);
+			}
+			
+			//if ('cashier' in req.params.total) {
+			//	console.log('>>' + req.params.total.cashier);
+			//	obj.set('cashier', req.params.total.cashier);
+			//}
+			//if ('totalSum' in req.params.total) {
+			//	console.log('>>' + req.params.total.totalSum);
+			//	obj.set('totalSum', parseFloat(req.params.total.totalSum));
+			//}
+			
+			obj.save().then(function(obj) {
+				console.log('>> Receipt saved');
+				console.log('>> Object id: ' + obj.id);
+			}, function(err) { console.log(err); });
 		}
 	}
 	
