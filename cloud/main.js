@@ -146,7 +146,7 @@ Parse.Cloud.define('cashiers', async (req) => {
 
 	returnMessage = JSON.stringify(results);
 
-	console.log('>> return message: ' + returnMessage);
+	//console.log('>> return message: ' + returnMessage);
 	return returnMessage;
 });
 
@@ -494,3 +494,25 @@ Parse.Cloud.define('chat', async (req) => {
 	console.log('>> return message: ' + returnMessage);
 	return returnMessage;
 });
+
+Parse.Cloud.define('current_state', async (req) => {
+
+	let returnMessage = 'Ok';
+	
+	if (Object.keys(req.params).length > 0) {
+		console.log(">> current_state: json contains data");
+		
+	} else {
+		console.log(">> chat json does not contain data");
+		
+		const query = new Parse.Query('CurrentState');
+		query.limit(1000);
+		const results = await query.find();
+
+		returnMessage = JSON.stringify(results);
+	}
+
+	console.log('>> return message: ' + returnMessage);
+	return returnMessage;
+});
+
