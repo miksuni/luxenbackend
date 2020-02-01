@@ -172,8 +172,7 @@ Parse.Cloud.define('productinfo', async (req) => {
 
 Parse.Cloud.define('receipts', async (req) => {
 
-	let returnMessage = 'Ok';
-
+	var returnValues = [];
 	const query = new Parse.Query('Receipt');
 	query.limit(1000);
 	const results = await query.find();
@@ -185,13 +184,14 @@ Parse.Cloud.define('receipts', async (req) => {
 		var currentDate = new Date();
 		console.log('----> current date ' + currentDate.toString());
 		if (receiptDate.getDate() == currentDate.getDate()) {
-			console.log('todays cashier: ' + results[i].cashier);
+			console.log('todays cashier: ' + results[i].get('cashier'));
+			returnValues.push(JSON.stringify(results[i]));
 		}
 	}
 	//returnMessage = JSON.stringify(results);
 
 	//console.log('>> return message: ' + returnMessage);
-	return returnMessage;
+	return returnValues;
 });
 
 Parse.Cloud.define('addproduct', async (req) => {
