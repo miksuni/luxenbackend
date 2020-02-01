@@ -404,9 +404,9 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 				obj.set('receiptNr', req.params.receiptData.receiptNr);
 			}
 			obj.set('date', new Date());
-			if ('cashier' in req.params.receiptData.items[i]) {
-				console.log('>>' + req.params.receiptData.items[i].cashier);
-				obj.set('cashier', req.params.receiptData.items[i].cashier);
+			if ('cashier' in req.params.receiptData) {
+				console.log('>>' + req.params.receiptData.cashier);
+				obj.set('cashier', req.params.receiptData.cashier);
 			}
 			if ('paymentMethod' in req.params.receiptData.items[i]) {
 				console.log('>>' + req.params.receiptData.items[i].paymentMethod);
@@ -428,14 +428,10 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 				console.log('>>' + req.params.receiptData.items[i].originator);
 				obj.set('originator', req.params.receiptData.items[i].originator);
 			}
-			if ('originator' in req.params.receiptData.items[i]) {
-				console.log('>>' + req.params.receiptData.items[i].originator);
-				obj.set('originator', req.params.receiptData.items[i].originator);
+			if ('givenDate' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].givenDate);
+				obj.set('givenDate', req.params.receiptData.items[i].givenDate);
 			}
-			//if ('givenDate' in req.params.receiptData.items[i]) {
-			//	console.log('>>' + req.params.receiptData.items[i].givenDate);
-			//	obj.set('givenDate', req.params.receiptData.items[i].givenDate);
-			//}
 			if ('valueBefore' in req.params.receiptData.items[i]) {
 				console.log('>>' + req.params.receiptData.items[i].valueBefore);
 				obj.set('valueBefore', req.params.receiptData.items[i].valueBefore);
