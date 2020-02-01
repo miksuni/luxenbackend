@@ -179,8 +179,11 @@ Parse.Cloud.define('receipts', async (req) => {
 	const results = await query.find();
     console.log('----> receipts');
 	for (var i = 0; i < results.lenght; i++) {
+		 console.log('----> receipt found');
 		var receiptDate = results[i].get('date');
+		console.log('----> receipt date ' + receiptDate.toString());
 		var currentDate = new Date();
+		console.log('----> current date ' + currentDate.toString());
 		if (receiptDate.getDate() == currentDate.getDate()) {
 			console.log('todays cashier: ' + results[i].cashier);
 		}
