@@ -178,7 +178,7 @@ Parse.Cloud.define('receipts', async (req) => {
 	query.limit(1000);
 	const results = await query.find();
     console.log('----> receipts');
-	for (var i = 0; i < results.lenght; i++) {
+    for (var i = 0; i < results.length; i++) {
 		 console.log('----> receipt found');
 		var receiptDate = results[i].get('date');
 		console.log('----> receipt date ' + receiptDate.toString());
