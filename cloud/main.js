@@ -404,9 +404,17 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 				obj.set('receiptNr', req.params.receiptData.receiptNr);
 			}
 			obj.set('date', new Date());
+			if ('receiptNr' in req.params.receiptData) {
+				console.log('>>' + req.params.receiptData.receiptNr);
+				obj.set('receiptNr', req.params.receiptData.receiptNr);
+			}			
 			if ('paymentMethod' in req.params.receiptData.items[i]) {
 				console.log('>>' + req.params.receiptData.items[i].paymentMethod);
 				obj.set('paymentMethod', req.params.receiptData.items[i].paymentMethod);
+			}
+			if ('sum' in req.params.receiptData.items[i]) {
+				console.log('>>' + req.params.receiptData.items[i].sum);
+				obj.set('totalSum', req.params.receiptData.items[i].sum);
 			}
 			
 			//if ('cashier' in req.params.total) {
