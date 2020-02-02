@@ -143,10 +143,17 @@ Parse.Cloud.define('send_email', async (req) => {
 			return str;
 		}
 		
+		function makeMessage() {
+			console.log('>> recipient: ' + req.params.recipient);
+			console.log('>> messsage: ' + req.params.content);
+			return req.params.content;
+		}
+		
 		function sendMessage(auth) {
 			const gmail = google.gmail({version: 'v1', auth});
 		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Tuotteita loppumassa', makeOrderMessage());
-		    var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyynnin päivänpäätös', makeReportMessage());
+		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyyntiraportti', makeReportMessage());
+		    var raw = makeBody(req.params.recipient, 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyyntiraportti', makeMessage());
 		    gmail.users.messages.send({
 		        auth: auth,
 		        userId: 'me',
