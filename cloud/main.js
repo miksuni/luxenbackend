@@ -297,7 +297,7 @@ Parse.Cloud.define('saveproduct', async (req) => {
 					results[i].set('price', parseFloat(req.params.price));
 				}
 				if ('availableFromPublisher' in req.params) {
-					results[i].set('availableFromPublisher', req.params.availableFromPublisher.toLowerCase() == "true");
+					obj.set('availableFromPublisher', req.params.availableFromPublisher);
 				}
 				results[i].save().then(function(obj) {
 					console.log('>> saved');
