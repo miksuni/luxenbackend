@@ -18,9 +18,9 @@ exports.startWS = function () {
   ws.on('message', function incoming(data) {
   	  console.log('ws.on message:' + data);
 
-  	  //jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
-      //     console.log('>> mul result: ' + result);
-      //});
+  	  jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
+           console.log('>> mul result: ' + result);
+      });
   });
 
   ws.jrpc.toStream = function(message){
