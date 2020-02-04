@@ -16,11 +16,13 @@ exports.startWS = function () {
   
 
   ws.on('message', function incoming(data) {
+	  // RPC serveri palauttaa ajan jolloin tätä functiota kutsutaan jolloin
+	  // lähetetään taas uusi kutsu --> luupi
   	  console.log('ws.on message:' + data);
 
-  	  jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
-           console.log('>> mul result: ' + result);
-      });
+  	  //jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
+      //     console.log('>> mul result: ' + result);
+      //});
   });
 
   ws.jrpc.toStream = function(message){
