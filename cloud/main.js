@@ -103,7 +103,7 @@ Parse.Cloud.define('send_email', async (req) => {
 		function makeBody(to, from, subject, message) {
 			var str = ["Content-Type: text/html; charset=\"UTF-8\"\n",
 			    "MIME-Version: 1.0\n",
-			    "Content-Transfer-Encoding: base64\n",
+			    "Content-Transfer-Encoding: 7bit\n",
 			    "to: ", to, "\n",
 			    "from: ", from, "\n",
 			    "subject: ", subject, "\n\n",
