@@ -107,11 +107,7 @@ Parse.Cloud.define('send_email', async (req) => {
 			    "to: ", to, "\n",
 			    "from: ", from, "\n",
 			    "subject: ", subject, "\n\n",
-			    "<html><body>",
-			    "<h1>Test</h1>",
 			    message,
-			    "<table><tr><td>cell1</td><td>cell2</td></tr><tr><td>cell3</td><td>cell4</td></tr></table>",
-			    "</body></html>",
 		    ].join('');
 	
 		    var encodedMail = new Buffer(str).toString("base64").replace(/\+/g, '-').replace(/\//g, '_');
