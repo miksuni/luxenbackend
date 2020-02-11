@@ -113,7 +113,7 @@ Parse.Cloud.define('send_email', async (req) => {
 		    
 		function makeBody(to, from, subject, message) {
 			var contentType = "";
-			if (req.params.format == "text/html") {
+			if (req.params.format === "text/html") {
 				console.log(">> text/html");
 				contentType = "Content-Type: text/html; charset=\"UTF-8\"\n";
 			} else {
