@@ -637,3 +637,28 @@ Parse.Cloud.define('current_state', async (req) => {
 	return returnMessage;
 });
 
+Parse.Cloud.define('db_entries', async (req) => {
+
+	let returnMessage = '';
+
+	if (Object.keys(req.params).length > 0) {
+	
+		console.log(">> db_entries: json contains data");
+		
+		if ("dbentry" in req.params) {
+			const query = new Parse.Query(req.params.dbentry);
+			query.limit(1000);
+			const results = await query.find();
+
+			returnMessage = JSON.stringify(results);
+
+			//console.log('>> return message: ' + returnMessage);
+			return returnMessage;
+		} else {
+			console.log(">> db_entries json does not contain data")
+		}
+	} else {
+		console.log(">> no dbentry in db_entries json");
+	}
+	return returnMessage;
+});
