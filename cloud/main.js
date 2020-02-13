@@ -13,7 +13,7 @@ Parse.Cloud.define('connect_to_pt', async (req) => {
 
 Parse.Cloud.define('send_email', async (req) => {
 	let returnMessage = 'Ok';
-	console.log(">> send_email");
+	console.log(">>>> send_email");
 
 	if (Object.keys(req.params).length > 0) {
 		console.log(">> send_email: json contains data");
@@ -219,8 +219,6 @@ Parse.Cloud.define('send_email', async (req) => {
 		
 		function sendMessage(auth) {
 			const gmail = google.gmail({version: 'v1', auth});
-		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Tuotteita loppumassa', makeOrderMessage());
-		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyyntiraportti', makeReportMessage());
 		    var raw = makeBody2(req.params.recipient, 'lahti.ry.julkaisumyynti@gmail.com', req.params.subject, makeMessage());
 		    gmail.users.messages.send({
 		        auth: auth,
