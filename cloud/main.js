@@ -161,7 +161,7 @@ Parse.Cloud.define('send_email', async (req) => {
 			    	'Content-Type: text/plain\r\n',
 			    	'MIME-Version: 1.0\r\n',
 			    	'Content-Transfer-Encoding: base64\r\n',
-			    	'Content-Disposition: attachment; filename=', subject,'".json"\r\n\r\n',
+			    	'Content-Disposition: attachment; filename=', subject,'.json\r\n\r\n',
 			    	message, '\r\n\r\n',
 			    	'--foo_bar_baz\r\n',
 		        ].join('');
@@ -221,7 +221,7 @@ Parse.Cloud.define('send_email', async (req) => {
 			const gmail = google.gmail({version: 'v1', auth});
 		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Tuotteita loppumassa', makeOrderMessage());
 		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyyntiraportti', makeReportMessage());
-		    var raw = makeBody2(req.params.recipient, 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyyntiraportti', makeMessage());
+		    var raw = makeBody2(req.params.recipient, 'lahti.ry.julkaisumyynti@gmail.com', req.params.subject, makeMessage());
 		    gmail.users.messages.send({
 		        auth: auth,
 		        userId: 'me',
