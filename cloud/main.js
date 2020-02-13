@@ -293,7 +293,7 @@ Parse.Cloud.define('receipts', async (req) => {
 	}
 	returnMessage = JSON.stringify(foundItems);
 
-	console.log('>> return message: ' + returnMessage);
+	//console.log('>> return message: ' + returnMessage);
 	return returnMessage;
 });
 
