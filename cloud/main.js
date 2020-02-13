@@ -147,23 +147,23 @@ Parse.Cloud.define('send_email', async (req) => {
 			    var encodedMail = new Buffer(str).toString("base64").replace(/\+/g, '-').replace(/\//g, '_');
 			    return encodedMail;
 			} else {
-			    var str = ['Content-Type: multipart/mixed; boundary="--------"\r\n',
+			    var str = ['Content-Type: multipart/mixed; boundary="foo_bar_baz"\r\n',
 			    	'MIME-Version: 1.0\r\n',
 			    	'to: ', to, '\r\n',
 			    	'from: ', from, '\r\n',
 			    	'subject: ', subject, '\r\n\r\n',
-			    	'--------\r\n',
+			    	'--foo_bar_baz\r\n',
 			    	'Content-Type: text/plain; charset="UTF-8"\r\n',
 			    	'MIME-Version: 1.0\r\n',
 			    	'Content-Transfer-Encoding: 7bit\r\n\r\n',
 			    	'Liitteenä tietokanta json-tiedostona.\r\n\r\n',
-			    	'--------\r\n',
+			    	'--foo_bar_baz\r\n',
 			    	'Content-Type: text/plain\r\n',
 			    	'MIME-Version: 1.0\r\n',
 			    	'Content-Transfer-Encoding: base64\r\n',
 			    	'Content-Disposition: attachment; filename=', subject,'".json"\r\n\r\n',
 			    	message, '\r\n\r\n',
-			    	'--------\r\n',
+			    	'--foo_bar_baz\r\n',
 		        ].join('');
 	
 			    var encodedMail = new Buffer(str).toString("base64").replace(/\+/g, '-').replace(/\//g, '_');
