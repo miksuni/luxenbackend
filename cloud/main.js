@@ -133,6 +133,45 @@ Parse.Cloud.define('send_email', async (req) => {
 		        return encodedMail;
 		}
 	
+		function makeBody2(to, from, subject, message) {
+			if (req.params.format === "text/html") {
+			    var str = ["Content-Type: text/html; charset=\"UTF-8\"\n",
+			    	"MIME-Version: 1.0\n",
+			    	"Content-Transfer-Encoding: 7bit\n",
+			    	"to: ", to, "\n",
+			    	"from: ", from, "\n",
+			    	"subject: ", subject, "\n\n",
+			    	message
+		        ].join('');
+	
+			    var encodedMail = new Buffer(str).toString("base64").replace(/\+/g, '-').replace(/\//g, '_');
+			    return encodedMail;
+			} else {
+			    var str = ['Content-Type: multipart/mixed; boundary="--------"\r\n',
+			    	'MIME-Version: 1.0\r\n',
+			    	'to: ', to, '\r\n',
+			    	'from: ', from, '\r\n',
+			    	'subject: ', subject, '\r\n\r\n',
+			    	'--------\r\n',
+			    	'Content-Type: text/plain; charset="UTF-8"\r\n',
+			    	'MIME-Version: 1.0\r\n',
+			    	'Content-Transfer-Encoding: 7bit\r\n\r\n',
+			    	'Liitteenä tietokanta json-tiedostona.\r\n\r\n',
+			    	'--------\r\n',
+			    	'Content-Type: text/plain\r\n',
+			    	'MIME-Version: 1.0\r\n',
+			    	'Content-Transfer-Encoding: base64\r\n',
+			    	'Content-Disposition: attachment; filename=', subject,'".json"\r\n\r\n',
+			    	message, '\r\n\r\n',
+			    	'--------\r\n',
+		        ].join('');
+	
+			    var encodedMail = new Buffer(str).toString("base64").replace(/\+/g, '-').replace(/\//g, '_');
+			    return encodedMail;
+			}
+		}
+		
+		
 		function makeOrderMessage() {
 			var str = "";
 			console.log('>> product count: ' + req.params.products.length);
@@ -182,7 +221,7 @@ Parse.Cloud.define('send_email', async (req) => {
 			const gmail = google.gmail({version: 'v1', auth});
 		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Tuotteita loppumassa', makeOrderMessage());
 		    //var raw = makeBody('mikko.m.suni@gmail.com', 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyyntiraportti', makeReportMessage());
-		    var raw = makeBody(req.params.recipient, 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyyntiraportti', makeMessage());
+		    var raw = makeBody2(req.params.recipient, 'lahti.ry.julkaisumyynti@gmail.com', 'Julkaisumyyntiraportti', makeMessage());
 		    gmail.users.messages.send({
 		        auth: auth,
 		        userId: 'me',
