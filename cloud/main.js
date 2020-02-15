@@ -598,19 +598,7 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 						}, function(err) { console.log('--productInfo not found'); });
 					}, function(err) { console.log('itemobj save error' + err); });
 				}
-				
-				const statequery = new Parse.Query('CurrentState');
-				console.log('step 1');
-				stateobject = await statequery.first();
-				console.log('step 2');
-				stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
-				console.log('step 3');
-				stateobject.save().then(function(stateobject) {
-					console.log('>> current state updated');
-				}, function(err) { console.log('--current state save error' + err); });
-				
-				
-				
+
 			}, function(err) { console.log(err); });
 		}
 	}
@@ -641,15 +629,15 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 //		}, function(err) { console.log('itemobj save error' + err); });
 //	}
 //	
-//	const statequery = new Parse.Query('CurrentState');
-//	console.log('step 1');
-//	stateobject = await statequery.first();
-//	console.log('step 2');
-//	stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
-//	console.log('step 3');
-//	stateobject.save().then(function(stateobject) {
-//		console.log('>> current state updated');
-//	}, function(err) { console.log('--current state save error' + err); });
+	const statequery = new Parse.Query('CurrentState');
+	console.log('step 1');
+	stateobject = await statequery.first();
+	console.log('step 2');
+	stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
+	console.log('step 3');
+	stateobject.save().then(function(stateobject) {
+		console.log('>> current state updated');
+	}, function(err) { console.log('--current state save error' + err); });
 });
 
 
