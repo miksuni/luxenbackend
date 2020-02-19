@@ -307,7 +307,7 @@ Parse.Cloud.define('sold_items', async (req) => {
 	const results = await query.find();
     console.log('----> sold_items');
     for (var i = 0; i < results.length; i++) {
-		var soldDate = results[i].get('date');
+		var soldDate = results[i].get('createdAt');
 		var currentDate = new Date();
 		if (soldDate.getDate() == currentDate.getDate()) {
 			foundItems.push(results[i]);
