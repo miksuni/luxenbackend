@@ -297,6 +297,28 @@ Parse.Cloud.define('receipts', async (req) => {
 	return returnMessage;
 });
 
+Parse.Cloud.define('sold_items', async (req) => {
+
+	let returnMessage = 'Ok';
+	
+	var foundItems = [];
+	const query = new Parse.Query('SoldItem');
+	query.limit(1000);
+	const results = await query.find();
+    console.log('----> sold_items');
+    for (var i = 0; i < results.length; i++) {
+		var soldDate = results[i].get('date');
+		var currentDate = new Date();
+		if (soldDate.getDate() == currentDate.getDate()) {
+			foundItems.push(results[i]);
+		}
+	}
+	returnMessage = JSON.stringify(foundItems);
+
+	//console.log('>> return message: ' + returnMessage);
+	return returnMessage;
+});
+
 Parse.Cloud.define('addproduct', async (req) => {
 
 	let returnMessage = 'Ok';
