@@ -1,6 +1,8 @@
 const WebSocket = require('ws');
 const JsonRPC = require('simple-jsonrpc-js');
 
+var jrpc = new JsonRPC();
+
 exports.myDateTime = function () {
   return Date();
 };
@@ -10,10 +12,8 @@ exports.startWS = function () {
   const ws = new WebSocket('wss://fierce-shelf-80455.herokuapp.com');
 
   ////////////////////////////////////////////
-  var jrpc = new JsonRPC();
+  //var jrpc = new JsonRPC();
   ws.jrpc = jrpc;
-
-  
 
   ws.on('message', function incoming(data) {
 	  // RPC serveri palauttaa ajan jolloin tätä functiota kutsutaan jolloin
@@ -30,5 +30,11 @@ exports.startWS = function () {
     ws.send(message);
   }
   ///////////////////////////////////////////
-
 };
+
+exports.mul = function () {
+  jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
+    console.log('>> mul result: ' + result);
+  });
+}
+
