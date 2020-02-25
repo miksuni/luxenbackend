@@ -19,7 +19,7 @@ exports.startWS = function () {
 	  // RPC serveri palauttaa ajan jolloin tätä functiota kutsutaan jolloin
 	  // lähetetään taas uusi kutsu --> luupi
   	  console.log('ws.on message:' + data);
-      jrpc.messageHandler(message);
+      jrpc.messageHandler(data);
   	  //jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
       //     console.log('>> mul result: ' + result);
       //});
