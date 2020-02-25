@@ -19,7 +19,7 @@ Parse.Cloud.define('pt_command', async (req) => {
 	//		console.log('>>' + req.params.command);
 	//	}
 	//}
-	PT.mul();
+	PT.keepalive();
 	return returnMessage;
 })
 
