@@ -19,7 +19,7 @@ exports.startWS = function () {
 	  // RPC serveri palauttaa ajan jolloin tätä functiota kutsutaan jolloin
 	  // lähetetään taas uusi kutsu --> luupi
   	  console.log('ws.on message:' + data);
-
+      jrpc.messageHandler(message);
   	  //jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
       //     console.log('>> mul result: ' + result);
       //});
@@ -29,8 +29,13 @@ exports.startWS = function () {
   	console.log('ws.jrpc.toStream: ' + message);
     ws.send(message);
   }
+
+  jrpc.on('_Keepalive', [], function(){
+    return "";
+  });
   ///////////////////////////////////////////
 };
+
 
 exports.mul = function () {
   jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
@@ -38,3 +43,6 @@ exports.mul = function () {
   });
 }
 
+exports.keepalive = function () {
+  jrpc.call('_Keepalive', {});
+}
