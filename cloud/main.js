@@ -279,15 +279,33 @@ Parse.Cloud.define('receipts', async (req) => {
 	const query = new Parse.Query('Receipt');
 	query.limit(1000);
 	const results = await query.find();
-    console.log('----> receipts');
+    console.log('receipts');
     for (var i = 0; i < results.length; i++) {
-		 console.log('----> receipt found');
 		var receiptDate = results[i].get('date');
-		console.log('----> receipt date ' + receiptDate.toString());
 		var currentDate = new Date();
-		console.log('----> current date ' + currentDate.toString());
 		if (receiptDate.getDate() == currentDate.getDate()) {
-			console.log('todays cashier: ' + results[i].get('cashier'));
+			foundItems.push(results[i]);
+		}
+	}
+	returnMessage = JSON.stringify(foundItems);
+
+	//console.log('>> return message: ' + returnMessage);
+	return returnMessage;
+});
+
+Parse.Cloud.define('not_reported_receipts', async (req) => {
+
+	let returnMessage = 'Ok';
+	
+	var foundItems = [];
+	const query = new Parse.Query('Receipt');
+	query.limit(1000);
+	const results = await query.find();
+    console.log('not_reported_receipts');
+    for (var i = 0; i < results.length; i++) {
+		var receiptDate = results[i].get('date');
+		var currentDate = new Date();
+		if (receiptDate.getDate() == currentDate.getDate() && !results[i].get('reported')) {
 			foundItems.push(results[i]);
 		}
 	}
@@ -598,6 +616,7 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 				console.log('>>' + req.params.receiptData.items[i].committee);
 				obj.set('committee', req.params.receiptData.items[i].committee);
 			}
+			obj.set('reported', false);
 			
 			obj.save().then(function(obj) {
 				console.log('>> Receipt saved');
