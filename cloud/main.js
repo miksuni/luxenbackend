@@ -6,10 +6,22 @@ Parse.Cloud.define('hello', function(req, res) {
 
 Parse.Cloud.define('connect_to_pt', async (req) => {
 	let returnMessage = 'Ok';
-	console.log(">> connect_to_pt at: " + PT.myDateTime());;
+	console.log(">> connect_to_pt at: " + PT.myDateTime());
 	PT.startWS();
 	return returnMessage;
 });
+
+Parse.Cloud.define('pt_command', async (req) => {
+	let returnMessage = 'Ok';
+	console.log(">> pt command");
+	//if (Object.keys(req.params).length > 0) {
+	//	if ('command' in req.params) {
+	//		console.log('>>' + req.params.command);
+	//	}
+	//}
+	PT.keepalive();
+	return returnMessage;
+})
 
 Parse.Cloud.define('send_email', async (req) => {
 	let returnMessage = 'Ok';
