@@ -315,9 +315,7 @@ Parse.Cloud.define('not_reported_receipts', async (req) => {
 	const results = await query.find();
     console.log('not_reported_receipts');
     for (var i = 0; i < results.length; i++) {
-		var receiptDate = results[i].get('date');
-		var currentDate = new Date();
-		if (receiptDate.getDate() == currentDate.getDate() && !results[i].get('reported')) {
+		if (!results[i].get('reported')) {
 			foundItems.push(results[i]);
 		}
 	}
@@ -325,6 +323,22 @@ Parse.Cloud.define('not_reported_receipts', async (req) => {
 
 	//console.log('>> return message: ' + returnMessage);
 	return returnMessage;
+});
+
+Parse.Cloud.define('set_as_reported', async (req) => {
+
+	let returnMessage = 'Ok';
+
+	const query = new Parse.Query('Receipt');
+	query.limit(1000);
+	const results = await query.find();
+
+	console.log('>> found ' + results.length + ' products');
+	
+	for (var i = 0; i < req.params.length; i++) {
+		console.log('>> param: ' + JSON.stringify(req.params[i]));
+	}
+
 });
 
 Parse.Cloud.define('sold_items', async (req) => {
