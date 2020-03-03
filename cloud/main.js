@@ -343,6 +343,13 @@ Parse.Cloud.define('set_as_reported', async (req) => {
 			var n = results[j].id.localeCompare(Object.values(req.params)[i].objectId);
 			if (n == 0) {
 				console.log('>> product found: ' + JSON.stringify(results[j]));
+				
+				results[j].set('reported', true);
+			
+				results[j].save().then(function(productInfo) {
+					console.log('>> set reported as true');
+				}, function(err) { console.log('set error' + err); });
+
 				break;
 			}
 		}
