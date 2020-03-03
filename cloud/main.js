@@ -334,13 +334,13 @@ Parse.Cloud.define('set_as_reported', async (req) => {
 	const results = await query.find();
 
 	console.log('>> found ' + results.length + ' products');
-	console.log('>> Object.keys(req.params).length: ' + Object.keys(req.params).length);
+	console.log('>> Object.values(req.params).length: ' + Object.values(req.params).length);
 	
-	for (var i = 0; i < Object.keys(req.params).length; i++) {
-		console.log('>> param: ' + JSON.stringify(Object.keys(req.params)[i]));
+	for (var i = 0; i < Object.values(req.params).length; i++) {
+		console.log('>> param: ' + JSON.stringify(Object.values(req.params)[i]));
 		
 		for (var j = 0; j < results.length; j++) {
-			var n = results[j].id.localeCompare(Object.keys(req.params)[i].objectId);
+			var n = results[j].id.localeCompare(Object.values(req.params)[i].objectId);
 			if (n == 0) {
 				console.log('>> product found: ' + JSON.stringify(results[j]));
 				break;
