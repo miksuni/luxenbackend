@@ -334,6 +334,7 @@ Parse.Cloud.define('set_as_reported', async (req) => {
 	const results = await query.find();
 
 	console.log('>> found ' + results.length + ' products');
+	console.log('>> req.params.length: ' + req.params.length);
 	
 	for (var i = 0; i < req.params.length; i++) {
 		console.log('>> param: ' + JSON.stringify(req.params[i]));
