@@ -14,14 +14,14 @@ exports.myDateTime = function () {
 
 exports.startWS = function () {
   console.log('>> startWS');
-  //const ws = new WebSocket('wss://fierce-shelf-80455.herokuapp.com');
-  const ws = new WebSocket('wss://' +
+  const ws = new WebSocket('wss://fierce-shelf-80455.herokuapp.com');
+  /*const ws = new WebSocket('wss://' +
                             process.env.TP_USER +
                             ':' +
                             process.env.TP_PASS +
                             '@api.poplatek.com/api/v2/terminal/' +
                             process.env.TERMINAL_ID +
-                            '/jsonpos');
+                            '/jsonpos');*/
 
   ws.jrpc = jrpc;
 
