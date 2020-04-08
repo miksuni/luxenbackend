@@ -24,15 +24,29 @@ exports.startWS = function () {
                             process.env.TERMINAL_ID +
                             '/jsonpos');
 
-  ws.jrpc = jrpc;
+  const username = process.env.TP_USER;
+  const password = process.env.TP_PASS;
+  const terminalid = process.env.TERMINAL_ID;
+
+  const ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
+
+  ws.on('open', function open() {
+    ws.send(JSON.stringify({
+        "jsonrpc": "2.0",
+        "method": "TerminalInfo",
+        "id": "pos-1",
+        "params": {
+        }
+    }));
+  });
 
   ws.on('message', function incoming(data) {
   	  console.log('ws.on message:' + data);
       jrpc.messageHandler(data);
   });
 
-  ws.jrpc.toStream = function(message){
-  	console.log('ws.jrpc.toStream: ' + message);
+  jrpc.toStream = function(message){
+  	console.log('jrpc.toStream: ' + message);
     ws.send(message);
   }
 
