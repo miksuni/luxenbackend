@@ -16,13 +16,6 @@ exports.startWS = function () {
   console.log('>> startWS');
   //const ws = new WebSocket('ws://fierce-shelf-80455.herokuapp.com');
   //console.log('wss://' + process.env.TP_USER + ':' + process.env.TP_PASS + '@api.sandbox.poplatek.com/api/v2/terminal/' + process.env.TERMINAL_ID + '/jsonpos');
-  const ws = new WebSocket('wss://' +
-                            process.env.TP_USER +
-                            ':' +
-                            process.env.TP_PASS +
-                            '@api.poplatek.com/api/v2/terminal/' +
-                            process.env.TERMINAL_ID +
-                            '/jsonpos');
 
   const username = process.env.TP_USER;
   const password = process.env.TP_PASS;
