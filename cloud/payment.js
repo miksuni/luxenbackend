@@ -17,8 +17,9 @@ exports.startWS = function () {
   //const ws = new WebSocket('ws://fierce-shelf-80455.herokuapp.com');
   //console.log('wss://' + process.env.TP_USER + ':' + process.env.TP_PASS + '@api.sandbox.poplatek.com/api/v2/terminal/' + process.env.TERMINAL_ID + '/jsonpos');
 
-  const username = process.env.TP_USER;
-  const password = process.env.TP_PASS;
+  const username = process.env.PT_USER;
+  const password = process.env.PT_PASS;
+  const apiKey = process.env.PT_API_KEY;
   const terminalid = process.env.TERMINAL_ID;
 
   const ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
@@ -91,4 +92,17 @@ exports.mul = function () {
 
 exports.keepalive = function () {
   jrpc.call('_Keepalive', {});
+}
+
+exports.purchase = function (amount, receiptId) {
+  console.log('Purchase: ' + amount + ', ' + receiptId);
+  /*
+  jrpc.call('Purchase', {"api_key": apiKey,
+                       "cashier_language": "fi",
+					   "receipt_id": receiptId,
+		               "amount": amount,
+                       "currency": "EUR",
+                       "forced_authorization": true
+  })
+  */
 }
