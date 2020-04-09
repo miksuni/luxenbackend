@@ -78,6 +78,12 @@ exports.startWS = function () {
 
   jrpc.toStream = function(message){
   	console.log('jrpc.toStream: ' + message);
+    var jsonObj = JSON.parse(message);
+    if (jsonObj.id) {
+  	  jsonObj.id = jsonObj.id.toString();
+	  message = JSON.stringify(jsonObj);
+      console.log('updated: ' + message);
+    }
     ws.send(message);
   }
 
@@ -137,7 +143,7 @@ exports.purchase = function (amount, receiptId) {
 
   jrpc.call('Purchase', {"api_key": process.env.PT_API_KEY,
                        "cashier_language": "fi",
-					   "receipt_id": receiptId.toString(),
+					   "receipt_id": receiptId,
 		               "amount": amount * 100,
                        "currency": "EUR",
                        "forced_authorization": true
