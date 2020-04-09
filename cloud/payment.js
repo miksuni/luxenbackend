@@ -137,8 +137,8 @@ exports.purchase = function (amount, receiptId) {
 
   jrpc.call('Purchase', {"api_key": process.env.PT_API_KEY,
                        "cashier_language": "fi",
-					   "receipt_id": receiptId,
-		               "amount": amount,
+					   "receipt_id": receiptId.toString(),
+		               "amount": amount * 100,
                        "currency": "EUR",
                        "forced_authorization": true
   })
