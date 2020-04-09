@@ -135,7 +135,7 @@ exports.purchase = function (amount, receiptId) {
   console.log('Purchase: ' + amount + ', ' + receiptId);
   command = PURCHASE;
 
-  jrpc.call('Purchase', {"api_key": apiKey,
+  jrpc.call('Purchase', {"api_key": process.env.PT_API_KEY,
                        "cashier_language": "fi",
 					   "receipt_id": receiptId,
 		               "amount": amount,
