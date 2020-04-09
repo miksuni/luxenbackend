@@ -36,7 +36,44 @@ exports.startWS = function () {
 
   ws.on('message', function incoming(data) {
   	  console.log('ws.on message:' + data);
-      jrpc.messageHandler(data);
+  	// handle control commands first
+  	var controlCmd = false;
+  	var jsonObj = JSON.parse(data);
+  	if (jsonObj.method) {
+      if (jsonObj.method === '_Keepalive') {
+	  	console.log('Control cmd');
+	  	controlCmd = true;
+      }
+      if (controlCmd) {
+        jrpc.messageHandler(data);
+        return;
+      }
+    }
+
+    // handle reponses to sent commands
+    switch (command) {
+	  case TERMINALINFO:
+	  {
+	    console.log('Response to TerminalInfo');
+        if (jsonObj.result.sales_location_name) {
+		  console.log('sales_location_name: ' + jsonObj.result.sales_location_name);
+        }
+        command = 0;
+        break;
+	  }
+	  case STATUS:
+	  {
+	    console.log('Response to Status');
+        command = 0;
+        break;
+	  }
+	  case PURCHASE:
+	  {
+	    console.log('Response to Purchase');
+        command = 0;
+        break;
+	  }
+    }
   });
 
   jrpc.toStream = function(message){
@@ -96,7 +133,8 @@ exports.keepalive = function () {
 
 exports.purchase = function (amount, receiptId) {
   console.log('Purchase: ' + amount + ', ' + receiptId);
-  /*
+  command = PURCHASE;
+
   jrpc.call('Purchase', {"api_key": apiKey,
                        "cashier_language": "fi",
 					   "receipt_id": receiptId,
@@ -104,5 +142,4 @@ exports.purchase = function (amount, receiptId) {
                        "currency": "EUR",
                        "forced_authorization": true
   })
-  */
 }
