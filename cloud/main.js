@@ -29,7 +29,7 @@ Parse.Cloud.define('purchase', async (req) => {
     if (Object.keys(req.params).length > 1) {
 		if (('amount' in req.params) && ('receiptId' in req.params)) {
 			console.log('>>' + req.params.amount + ", " + req.params.receiptId);
-			PT.purchase(amount, receiptId);
+			PT.purchase(req.params.amount, req.params.receiptId);
 		}
 	}
 	return returnMessage;
