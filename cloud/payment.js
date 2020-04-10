@@ -40,36 +40,39 @@ exports.startWS = function () {
   	var controlCmd = false;
   	var jsonObj = JSON.parse(data);
   	if (jsonObj.method) {
-      if (jsonObj.method === '_Keepalive') {
+	  console.log('PT: named method');
+      /*if (jsonObj.method === '_Keepalive') {
 	  	console.log('Control cmd');
 	  	controlCmd = true;
       }
       if (controlCmd) {
         jrpc.messageHandler(data);
         return;
-      }
+      }*/
+      jrpc.messageHandler(data);
+      return;
     }
 
     // handle reponses to sent commands
     switch (command) {
 	  case TERMINALINFO:
 	  {
-	    console.log('Response to TerminalInfo');
+	    console.log('PT: Response to TerminalInfo');
         if (jsonObj.result.sales_location_name) {
-		  console.log('sales_location_name: ' + jsonObj.result.sales_location_name);
+		  console.log('PT: sales_location_name: ' + jsonObj.result.sales_location_name);
         }
         command = 0;
         break;
 	  }
 	  case STATUS:
 	  {
-	    console.log('Response to Status');
+	    console.log('PT: Response to Status');
         command = 0;
         break;
 	  }
 	  case PURCHASE:
 	  {
-	    console.log('Response to Purchase');
+	    console.log('PT: Response to Purchase');
         command = 0;
         break;
 	  }
@@ -77,12 +80,12 @@ exports.startWS = function () {
   });
 
   jrpc.toStream = function(message){
-  	console.log('jrpc.toStream: ' + message);
+  	console.log('PT: jrpc.toStream: ' + message);
     var jsonObj = JSON.parse(message);
     if (jsonObj.id) {
   	  jsonObj.id = jsonObj.id.toString();
 	  message = JSON.stringify(jsonObj);
-      console.log('updated: ' + message);
+      console.log('PT: updated: ' + message);
     }
     ws.send(message);
   }
@@ -112,20 +115,28 @@ exports.startWS = function () {
 						battery_charging,
 						plugged_in) {
 	if (timestamp) {
-		console.log('timestamp ' + timestamp);
+		console.log('PT: timestamp ' + timestamp);
 	}
 	if (ready_for_transaction) {
-		console.log('ready_for_transaction ' + ready_for_transaction);
+		console.log('PT: ready_for_transaction ' + ready_for_transaction);
 	}
 	if (psp_connection_available) {
-		console.log('psp_connection_available ' + psp_connection_available);
+		console.log('PT: psp_connection_available ' + psp_connection_available);
+	}
+	if (transaction_status) {
+		console.log('PT: transaction_status ' + transaction_status);
+	}
+});
+
+jrpc.on('PosMessage', ['message'], function(message) {
+	if (message) {
+		console.log('PT: message ' + message);
 	}
 })
 
 jrpc.on('TerminalInfo', ['result'], function(result){
-  console.log('TerminalInfo: ' + result);
+  console.log('PT: TerminalInfo: ' + result);
 });
-};
 
 exports.mul = function () {
   jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
@@ -138,7 +149,7 @@ exports.keepalive = function () {
 }
 
 exports.purchase = function (amount, receiptId) {
-  console.log('Purchase: ' + amount + ', ' + receiptId);
+  console.log('PT: Purchase: ' + amount + ', ' + receiptId);
   command = PURCHASE;
 
   jrpc.call('Purchase', {"api_key": process.env.PT_API_KEY,
