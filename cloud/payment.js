@@ -137,6 +137,7 @@ jrpc.on('PosMessage', ['message'], function(message) {
 jrpc.on('TerminalInfo', ['result'], function(result){
   console.log('PT: TerminalInfo: ' + result);
 });
+};
 
 exports.mul = function () {
   jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
