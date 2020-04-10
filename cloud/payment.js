@@ -94,7 +94,8 @@ exports.startWS = function () {
     return {};
   });
 
-  jrpc.on('StatusEvent', ['timestamp', 
+  jrpc.on('StatusEvent', ['timestamp',
+                        'pending_transaction_count',
 						'ready_for_transaction', 
 						'psp_connection_available', 
 						'transaction_status', 
@@ -104,7 +105,8 @@ exports.startWS = function () {
 						'update_eta',
 						'battery_charging',
 						'plugged_in'],
-						function(timestamp, 
+						function(timestamp,
+						pending_transaction_count,
 						ready_for_transaction, 
 						psp_connection_available, 
 						transaction_status, 
@@ -116,6 +118,9 @@ exports.startWS = function () {
 						plugged_in) {
 	if (timestamp) {
 		console.log('PT: timestamp ' + timestamp);
+	}
+	if (pending_transaction_count) {
+		console.log('PT: pending_transaction_count ' + pending_transaction_count);
 	}
 	if (ready_for_transaction) {
 		console.log('PT: ready_for_transaction ' + ready_for_transaction);
