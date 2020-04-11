@@ -36,7 +36,7 @@ Parse.Cloud.define('purchase', async (req) => {
 })
 
 Parse.Cloud.define('get_transcation_status', async (req) => {
-	return PT.getTransactionStatus();
+	return JSON.stringify(PT.getTransactionStatus());
 })
 
 Parse.Cloud.define('send_email', async (req) => {
