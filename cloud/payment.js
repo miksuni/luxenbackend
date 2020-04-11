@@ -2,6 +2,7 @@ const WebSocket = require('ws');
 const JsonRPC = require('simple-jsonrpc-js');
 
 const jrpc = new JsonRPC();
+var ws;
 
 const TERMINALINFO = 1;
 const STATUS = 2;
@@ -29,7 +30,7 @@ exports.startWS = function () {
   const apiKey = process.env.PT_API_KEY;
   const terminalid = process.env.TERMINAL_ID;
 
-  const ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
+  ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
 
   ws.on('open', function open() {
     ws.send(JSON.stringify({
