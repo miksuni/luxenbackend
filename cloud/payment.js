@@ -138,7 +138,7 @@ exports.startWS = function () {
 	}
 	if (transaction_status) {
 		console.log('PT: transaction_status ' + transaction_status);
-		transactionStatus = transactionStatusMap(transaction_status);
+		transactionStatus = transactionStatusMap.get(transaction_status);
 	}
 });
 
