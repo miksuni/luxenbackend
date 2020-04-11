@@ -8,6 +8,13 @@ const STATUS = 2;
 const PURCHASE = 3;
 var command = 0;
 
+var transactionStatus = 0;
+var transactionStatusMap = new Map();
+transactionStatusMap.set("PROCESSING", 1);
+transactionStatusMap.set("WAIT_CARD_IN", 2);
+transactionStatusMap.set("WAIT_CARD_OUT", 3);
+transactionStatusMap.set("WAIT_POS", 4);
+
 exports.myDateTime = function () {
   return Date();
 };
@@ -74,6 +81,7 @@ exports.startWS = function () {
 	  {
 	    console.log('PT: Response to Purchase');
         command = 0;
+        transactionStatus = 0;
         break;
 	  }
     }
@@ -130,6 +138,7 @@ exports.startWS = function () {
 	}
 	if (transaction_status) {
 		console.log('PT: transaction_status ' + transaction_status);
+		transactionStatus = transactionStatusMap(transaction_status);
 	}
 });
 
@@ -164,5 +173,9 @@ exports.purchase = function (amount, receiptId) {
 		               "amount": amount * 100,
                        "currency": "EUR",
                        "forced_authorization": true
-  })
+  });
+}
+
+exports.getTransactionStatus = function() {
+	return {transactionStatus: transactionStatus};
 }
