@@ -102,6 +102,10 @@ exports.startWS = function () {
     return {};
   });
 
+  jrpc.on('_CloseReason', ['error'], function(error){
+    console.log('_CloseReason: ' + JSON.stringify(error));
+  });
+
   jrpc.on('StatusEvent', ['timestamp',
                         'pending_transaction_count',
 						'ready_for_transaction', 
@@ -157,6 +161,10 @@ exports.mul = function () {
   jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
     console.log('>> mul result: ' + result);
   });
+}
+
+exports.close = function () {
+  ws.close(1000, 'closed by POS');
 }
 
 exports.keepalive = function () {

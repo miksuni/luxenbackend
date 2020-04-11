@@ -39,6 +39,11 @@ Parse.Cloud.define('get_transcation_status', async (req) => {
 	return JSON.stringify(PT.getTransactionStatus());
 })
 
+Parse.Cloud.define('close_pt_connection', async (req) => {
+	PT.close();
+	return 'Ok';
+})
+
 Parse.Cloud.define('send_email', async (req) => {
 	let returnMessage = 'Ok';
 	console.log(">>>> send_email");
