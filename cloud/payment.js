@@ -190,6 +190,9 @@ exports.getTransactionStatus = function() {
 }
 
 exports.getPTStatus = function() {
-	const wsStatus = ws.readyState;
+	var wsStatus = -1;
+	if (ws) {
+		wsStatus = ws.readyState;
+	}
 	return {"wsstatus": wsStatus, "transactionStatus": transactionStatus};
 }
