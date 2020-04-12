@@ -188,3 +188,8 @@ exports.purchase = function (amount, receiptId) {
 exports.getTransactionStatus = function() {
 	return {transactionStatus: transactionStatus};
 }
+
+exports.getPTStatus = function() {
+	const wsStatus = ws.readyState;
+	return {"wsstatus": wsStatus, "transactionStatus": transactionStatus};
+}

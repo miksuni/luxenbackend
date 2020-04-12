@@ -39,6 +39,10 @@ Parse.Cloud.define('get_transcation_status', async (req) => {
 	return JSON.stringify(PT.getTransactionStatus());
 })
 
+Parse.Cloud.define('get_pt_status', async (req) => {
+	return JSON.stringify(PT.getPTStatus());
+})
+
 Parse.Cloud.define('close_pt_connection', async (req) => {
 	PT.close();
 	return 'Ok';
