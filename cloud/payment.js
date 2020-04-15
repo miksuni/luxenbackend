@@ -16,6 +16,8 @@ transactionStatusMap.set("WAIT_CARD_IN", 2);
 transactionStatusMap.set("WAIT_CARD_OUT", 3);
 transactionStatusMap.set("WAIT_POS", 4);
 
+var posMessage = "";
+
 exports.myDateTime = function () {
   return Date();
 };
@@ -83,6 +85,7 @@ exports.startWS = function () {
 	    console.log('PT: Response to Purchase');
         command = 0;
         transactionStatus = 0;
+        posMessage = "";
         break;
 	  }
     }
@@ -150,6 +153,7 @@ exports.startWS = function () {
 jrpc.on('PosMessage', ['message'], function(message) {
 	if (message) {
 		console.log('PT: message ' + message);
+		posMessage = message;
 	}
 })
 
@@ -194,5 +198,5 @@ exports.getPTStatus = function() {
 	if (ws) {
 		wsStatus = ws.readyState;
 	}
-	return {"wsstatus": wsStatus, "transactionStatus": transactionStatus};
+	return {"wsstatus": wsStatus, "transactionStatus": transactionStatus, "posMessage": posMessage};
 }
