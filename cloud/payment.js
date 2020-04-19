@@ -4,10 +4,17 @@ const JsonRPC = require('simple-jsonrpc-js');
 const jrpc = new JsonRPC();
 var ws;
 
+// PT commands
 const TERMINALINFO = 1;
 const STATUS = 2;
 const PURCHASE = 3;
 var command = 0;
+
+// PT statuses
+const CONNECTING = 0;
+const OPEN = 1;
+const CLOSING = 2;
+const CLOSED = 3;
 
 var transactionStatus = 0;
 var transactionStatusMap = new Map();
@@ -32,9 +39,20 @@ exports.startWS = function () {
   const apiKey = process.env.PT_API_KEY;
   const terminalid = process.env.TERMINAL_ID;
 
+  var doConnect = false;
+
   try {
-    ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
-    console.log('>> Ws connection created');
+	if (ws) {
+		if (ws.readyState === CLOSED) {
+			doConnect = true;
+		}
+	} else {
+      doConnect = true;
+	}
+	if (doConnect) {
+      ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
+      console.log('>> Ws connection created');
+    }
   } catch(err) {
 	console.log('>> catched error in createing ws: ' + err.message);
   }
@@ -173,7 +191,22 @@ exports.mul = function () {
 }
 
 exports.close = function () {
-  ws.close(1000, 'closed by POS');
+
+  var doDisonnect = false;
+
+  try {
+	if (ws) {
+		if (ws.readyState === OPEN) {
+			doDisonnect = true;
+		}
+	}
+	if (doDisonnect) {
+      ws.close(1000, 'closed by POS');
+      console.log('>> Ws disconnected');
+    }
+  } catch(err) {
+	console.log('>> catched error in disconnecting ws: ' + err.message);
+  }
 }
 
 exports.keepalive = function () {
