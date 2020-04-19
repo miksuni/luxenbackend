@@ -57,6 +57,7 @@ exports.startWS = function () {
 	console.log('>> catched error in createing ws: ' + err.message);
   }
   ws.on('open', function open() {
+	console.log('ws.on open' );
     ws.send(JSON.stringify({
         "jsonrpc": "2.0",
         "method": "TerminalInfo",
@@ -67,7 +68,7 @@ exports.startWS = function () {
   });
 
   ws.on('message', function incoming(data) {
-  	  console.log('ws.on message:' + data);
+  	  console.log('ws.on message: ' + data);
   	// handle control commands first
   	var controlCmd = false;
   	var jsonObj = JSON.parse(data);
@@ -111,6 +112,10 @@ exports.startWS = function () {
         break;
 	  }
     }
+  });
+
+  ws.on('error', function incoming(data) {
+	console.log('ws.on error: ' + data);
   });
 
   jrpc.toStream = function(message){
