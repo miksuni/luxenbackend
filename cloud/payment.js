@@ -34,6 +34,7 @@ exports.startWS = function () {
 
   try {
     ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
+    console.log('>> Ws connection created');
   } catch(err) {
 	console.log('>> catched error in createing ws: ' + err.message);
   }
@@ -197,6 +198,7 @@ exports.getTransactionStatus = function() {
 }
 
 exports.getPTStatus = function() {
+	console.log('>> getPTStatus');
 	var wsStatus = -1;
 	if (ws) {
 		wsStatus = ws.readyState;

@@ -40,6 +40,7 @@ Parse.Cloud.define('get_transcation_status', async (req) => {
 })
 
 Parse.Cloud.define('get_pt_status', async (req) => {
+	console.log('>> get_pt_status');
 	return JSON.stringify(PT.getPTStatus());
 })
 
