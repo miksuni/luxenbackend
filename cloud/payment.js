@@ -32,8 +32,11 @@ exports.startWS = function () {
   const apiKey = process.env.PT_API_KEY;
   const terminalid = process.env.TERMINAL_ID;
 
-  ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
-
+  try {
+    ws = new WebSocket(`wss://${username}:${password}@api.poplatek.com/api/v2/terminal/${terminalid}/jsonpos`, [ 'jsonrpc2.0' ]);
+  } catch(err) {
+	console.log('>> catched error in createing ws: ' + err.message);
+  }
   ws.on('open', function open() {
     ws.send(JSON.stringify({
         "jsonrpc": "2.0",
