@@ -243,3 +243,7 @@ exports.getPTStatus = function() {
 	}
 	return {"wsstatus": wsStatus, "transactionStatus": transactionStatus, "posMessage": posMessage};
 }
+
+setInterval(function() { 
+    console.log("Hello");
+ }, 3000);
