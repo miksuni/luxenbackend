@@ -251,7 +251,7 @@ setInterval(function() {
         if (ws) {
             if (ws.readyState === OPEN) {
                 console.log("Send keepalive");
-                jrpc.call('_Keepalive', {});
+                jrpc.call('_Keepalive', {"": ""});
             }
         }
     } catch(err) {
