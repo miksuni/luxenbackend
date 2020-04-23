@@ -76,7 +76,8 @@ exports.startWS = function () {
   	// handle control commands first
   	var controlCmd = false;
   	var jsonObj = JSON.parse(data);
-    if (jsonObj.id === "watchDogId") {
+    if (jsonObj.id === watchDogId) {
+      console.log("response to keepalive")
       watchDog--;
     }
   	if (jsonObj.method) {
