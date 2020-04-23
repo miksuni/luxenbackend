@@ -246,4 +246,16 @@ exports.getPTStatus = function() {
 
 setInterval(function() { 
     console.log("Hello");
- }, 3000);
+    
+    try {
+        if (ws) {
+            if (ws.readyState === OPEN) {
+                console.log("Send keepalive");
+                jrpc.call('_Keepalive', {});
+            }
+        }
+    } catch(err) {
+        console.log('>> catched error in checking ws: ' + err.message);
+    }
+    
+ }, 10000);
