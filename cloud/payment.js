@@ -18,7 +18,7 @@ const CLOSED = 3;
 
 // watch dog
 var watchDog = 0;
-var watchDogId = 0;
+var watchDogId = "";
 
 var transactionStatus = 0;
 var transactionStatusMap = new Map();
