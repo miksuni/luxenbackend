@@ -17,8 +17,8 @@ const CLOSING = 2;
 const CLOSED = 3;
 
 // watch dog
-var watchDog = 0;
-var watchDogId = "";
+//var watchDog = 0;
+//var watchDogId = "";
 
 var transactionStatus = 0;
 var transactionStatusMap = new Map();
@@ -76,10 +76,10 @@ exports.startWS = function () {
   	// handle control commands first
   	var controlCmd = false;
   	var jsonObj = JSON.parse(data);
-    if (jsonObj.id === watchDogId) {
-      console.log("response to keepalive")
-      watchDog--;
-    }
+    //if (jsonObj.id === watchDogId) {
+    //  console.log("response to keepalive")
+    //  watchDog--;
+    //}
   	if (jsonObj.method) {
 	  console.log('PT: named method');
       /*if (jsonObj.method === '_Keepalive') {
@@ -131,9 +131,9 @@ exports.startWS = function () {
     var jsonObj = JSON.parse(message);
     if (jsonObj.id) {
   	  jsonObj.id = jsonObj.id.toString();
-      if (jsonObj.method === "_Keepalive") {
-        watchDogId = jsonObj.id;
-      }
+      //if (jsonObj.method === "_Keepalive") {
+      //  watchDogId = jsonObj.id;
+      //}
 	  message = JSON.stringify(jsonObj);
       console.log('PT: updated: ' + message);
     }
@@ -257,7 +257,7 @@ exports.getPTStatus = function() {
 	return {"wsstatus": wsStatus, "transactionStatus": transactionStatus, "posMessage": posMessage};
 }
 
-setInterval(function() { 
+/*setInterval(function() { 
     console.log("Hello");
     
     try {
@@ -276,4 +276,4 @@ setInterval(function() {
         console.log('>> catched error in checking ws: ' + err.message);
     }
     
- }, 10000);
+ }, 10000);*/
