@@ -16,6 +16,8 @@ const OPEN = 1;
 const CLOSING = 2;
 const CLOSED = 3;
 
+var watchDog = 0;
+
 var transactionStatus = 0;
 var transactionStatusMap = new Map();
 transactionStatusMap.set("PROCESSING", 1);
@@ -130,6 +132,8 @@ exports.startWS = function () {
   }
 
   jrpc.on('_Keepalive', [], function(){
+    console.log("incoming keepalive");
+    watchDog--;
     return {};
   });
 
@@ -215,6 +219,7 @@ exports.close = function () {
 }
 
 exports.keepalive = function () {
+  console.log('_Keepalive');
   jrpc.call('_Keepalive', {});
 }
 
@@ -250,8 +255,13 @@ setInterval(function() {
     try {
         if (ws) {
             if (ws.readyState === OPEN) {
-                console.log("Send keepalive");
-                jrpc.call('_Keepalive', {"": ""});
+                if (watchDog > 0) {
+                    console.log('WS CONNECTION BROKEN');
+                } else {
+                    console.log("Send keepalive");
+                    watchDog++;
+                    jrpc.call('_Keepalive', {"": ""});
+                }
             }
         }
     } catch(err) {
