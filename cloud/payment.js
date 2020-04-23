@@ -16,7 +16,9 @@ const OPEN = 1;
 const CLOSING = 2;
 const CLOSED = 3;
 
+// watch dog
 var watchDog = 0;
+var watchDogId = 0;
 
 var transactionStatus = 0;
 var transactionStatusMap = new Map();
@@ -74,6 +76,9 @@ exports.startWS = function () {
   	// handle control commands first
   	var controlCmd = false;
   	var jsonObj = JSON.parse(data);
+    if (jsonObj.id === "watchDogId") {
+      watchDog--;
+    }
   	if (jsonObj.method) {
 	  console.log('PT: named method');
       /*if (jsonObj.method === '_Keepalive') {
@@ -125,6 +130,9 @@ exports.startWS = function () {
     var jsonObj = JSON.parse(message);
     if (jsonObj.id) {
   	  jsonObj.id = jsonObj.id.toString();
+      if (jsonObj.method === "_Keepalive") {
+        watchDogId = jsonObj.id;
+      }
 	  message = JSON.stringify(jsonObj);
       console.log('PT: updated: ' + message);
     }
@@ -133,7 +141,6 @@ exports.startWS = function () {
 
   jrpc.on('_Keepalive', [], function(){
     console.log("incoming keepalive");
-    watchDog--;
     return {};
   });
 
