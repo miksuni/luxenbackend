@@ -28,7 +28,7 @@ transactionStatusMap.set("WAIT_CARD_OUT", 3);
 transactionStatusMap.set("WAIT_POS", 4);
 
 var posMessage = "";
-var paymentStatus = 0; // ok status, failed = -1
+var paymentStatus = 0; // ok status, processing = 1, failed = -1
 
 exports.myDateTime = function () {
   return Date();
@@ -120,6 +120,7 @@ exports.startWS = function () {
           console.log('Card payment succesful')
           transactionStatus = 0;
           posMessage = "";
+          paymentStatus = 0;
         } else {
           console.log('Card payment failed')
           transactionStatus = 0;
@@ -243,7 +244,7 @@ exports.keepalive = function () {
 exports.purchase = function (amount, receiptId) {
   console.log('PT: Purchase: ' + amount + ', ' + receiptId);
   command = PURCHASE;
-  paymentStatus = 0;
+  paymentStatus = 1;
 
   jrpc.call('Purchase', {"api_key": process.env.PT_API_KEY,
                        "cashier_language": "fi",
