@@ -28,7 +28,7 @@ transactionStatusMap.set("WAIT_CARD_OUT", 3);
 transactionStatusMap.set("WAIT_POS", 4);
 
 var posMessage = "";
-var paymentStatus = 0; // ok status, processing = 1, failed = -1
+var paymentStatus = 2; // -1 = failed, 0 = ok, 1 = processing, 2 = unknown;
 
 exports.myDateTime = function () {
   return Date();
