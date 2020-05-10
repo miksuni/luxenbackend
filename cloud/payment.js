@@ -4,19 +4,27 @@ const JsonRPC = require('simple-jsonrpc-js');
 const jrpc = new JsonRPC();
 var ws;
 
-// PT commands
+// PT commands (by PT specs)
 const TERMINALINFO = 1;
 const STATUS = 2;
 const PURCHASE = 3;
 var command = 0;
 
-// PT statuses
+// PT statuses (by WebSocket specs)
 const CONNECTING = 0;
 const OPEN = 1;
 const CLOSING = 2;
 const CLOSED = 3;
 
-// watch dog
+// Payment status
+const FAILED = -1;
+const OK = 0;
+const PROCESSING = 1;
+const UNKNOWN = 2;
+
+// watch dog, not used for the time being
+// because PT backend would reponse to keepalive
+// even though PT disconnected
 //var watchDog = 0;
 //var watchDogId = "";
 
@@ -28,7 +36,7 @@ transactionStatusMap.set("WAIT_CARD_OUT", 3);
 transactionStatusMap.set("WAIT_POS", 4);
 
 var posMessage = "";
-var paymentStatus = 2; // -1 = failed, 0 = ok, 1 = processing, 2 = unknown;
+var paymentStatus = UNKNOWN;
 
 exports.myDateTime = function () {
   return Date();
@@ -37,7 +45,6 @@ exports.myDateTime = function () {
 exports.startWS = function () {
   console.log('>> startWS');
   //const ws = new WebSocket('ws://fierce-shelf-80455.herokuapp.com');
-  //console.log('wss://' + process.env.TP_USER + ':' + process.env.TP_PASS + '@api.sandbox.poplatek.com/api/v2/terminal/' + process.env.TERMINAL_ID + '/jsonpos');
 
   const username = process.env.PT_USER;
   const password = process.env.PT_PASS;
@@ -72,6 +79,7 @@ exports.startWS = function () {
     }));
   });
 
+  // vastaanotettiin 2 melkein samanaikaista keepalive viestiä samalla id:llä -> yhteys katkaistiin kun molempiin kuitattiin
   ws.on('message', function incoming(data) {
   	  console.log('ws.on message: ' + data);
   	// handle control commands first
@@ -113,6 +121,7 @@ exports.startWS = function () {
         break;
 	  }
 	  case PURCHASE:
+      case CHECK:
 	  {
 	    console.log('PT: Response to Purchase');
         command = 0;
@@ -120,12 +129,12 @@ exports.startWS = function () {
           console.log('Card payment succesful')
           transactionStatus = 0;
           posMessage = "";
-          paymentStatus = 0;
+          paymentStatus = OK;
         } else {
           console.log('Card payment failed')
           transactionStatus = 0;
           posMessage = "";
-          paymentStatus = -1;
+          paymentStatus = FAILED;
         }
         break;
 	  }
@@ -244,7 +253,7 @@ exports.keepalive = function () {
 exports.purchase = function (amount, receiptId) {
   console.log('PT: Purchase: ' + amount + ', ' + receiptId);
   command = PURCHASE;
-  paymentStatus = 1;
+  paymentStatus = PROCESSING;
 
   jrpc.call('Purchase', {"api_key": process.env.PT_API_KEY,
                        "cashier_language": "fi",
@@ -252,6 +261,17 @@ exports.purchase = function (amount, receiptId) {
 		               "amount": amount * 100,
                        "currency": "EUR",
                        "forced_authorization": true
+  });
+}
+
+exports.checkLastPurchase = function (amount, receiptId) {
+  console.log('PT: checkLastPurchase: ' + amount + ', ' + receiptId);
+  command = CHECK;
+
+  jrpc.call('Check', {"api_key": process.env.PT_API_KEY,
+                       "receipt_id": receiptId,
+                       "amount": amount * 100,
+                       "currency": "EUR"
   });
 }
 
@@ -264,6 +284,7 @@ exports.getPTStatus = function() {
 	var wsStatus = -1;
 	if (ws) {
 		wsStatus = ws.readyState;
+        console.log('>> readyState: ' + ws.readyState);
 	}
 	return {"wsstatus": wsStatus,
             "transactionStatus": transactionStatus,
