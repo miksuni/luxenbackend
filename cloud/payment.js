@@ -8,6 +8,7 @@ var ws;
 const TERMINALINFO = 1;
 const STATUS = 2;
 const PURCHASE = 3;
+const CHECK = 4;
 var command = 0;
 
 // PT statuses (by WebSocket specs)
