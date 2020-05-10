@@ -281,15 +281,23 @@ exports.getTransactionStatus = function() {
 
 exports.getPTStatus = function() {
 	console.log('>> getPTStatus');
-	var wsStatus = -1;
-	if (ws) {
-		wsStatus = ws.readyState;
-        console.log('>> readyState: ' + ws.readyState);
-	}
-	return {"wsstatus": wsStatus,
-            "transactionStatus": transactionStatus,
-            "paymentStatus": paymentStatus,
-            "posMessage": posMessage};
+    try {
+	   var wsStatus = -1;
+	   if (ws) {
+	       wsStatus = ws.readyState;
+           console.log('>> readyState: ' + ws.readyState);
+	   }
+	   return {"wsstatus": wsStatus,
+               "transactionStatus": transactionStatus,
+               "paymentStatus": paymentStatus,
+               "posMessage": posMessage};
+    } catch(err) {
+       console.log('>> catched error in getting ws status: ' + err.message);
+       return {"wsstatus": -1,
+               "transactionStatus": transactionStatus,
+               "paymentStatus": paymentStatus,
+               "posMessage": posMessage};
+    }
 }
 
 /*setInterval(function() { 
