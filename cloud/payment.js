@@ -39,6 +39,8 @@ transactionStatusMap.set("WAIT_POS", 4);
 var posMessage = "";
 var paymentStatus = UNKNOWN;
 
+var lastResult = { merchantReceipt: "", customerReceipt: ""};
+
 exports.myDateTime = function () {
   return Date();
 };
@@ -131,6 +133,9 @@ exports.startWS = function () {
           transactionStatus = 0;
           posMessage = "";
           paymentStatus = OK;
+          lastResult.merchantReceipt = jsonObj.result.merchant_receipt.text;
+          lastResult.customerReceipt = jsonObj.result.customer_receipt.text;
+          
         } else {
           console.log('Card payment failed')
           transactionStatus = 0;
@@ -253,6 +258,8 @@ exports.keepalive = function () {
 
 exports.purchase = function (amount, receiptId) {
   console.log('PT: Purchase: ' + amount + ', ' + receiptId);
+  lastResult.merchantReceipt = "";
+  lastResult.customerReceipt = "";
   command = PURCHASE;
   paymentStatus = PROCESSING;
 
@@ -299,6 +306,10 @@ exports.getPTStatus = function() {
                "paymentStatus": paymentStatus,
                "posMessage": posMessage};
     }
+}
+
+exports.getReceipt = function() {
+    return lastResult;
 }
 
 /*setInterval(function() { 
