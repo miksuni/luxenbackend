@@ -44,9 +44,9 @@ Parse.Cloud.define('get_pt_status', async (req) => {
 	return JSON.stringify(PT.getPTStatus());
 })
 
-Parse.Cloud.define('get_receipt', async (req) => {
-    console.log('>> get_receipt');
-    return JSON.stringify(PT.getReceipt());
+Parse.Cloud.define('get_receipt_text', async (req) => {
+    console.log('>> get_receipt_text');
+    return JSON.stringify(PT.getReceiptText());
 })
 
 Parse.Cloud.define('close_pt_connection', async (req) => {

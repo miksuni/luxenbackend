@@ -308,7 +308,7 @@ exports.getPTStatus = function() {
     }
 }
 
-exports.getReceipt = function() {
+exports.getReceiptText = function() {
     return lastResult;
 }
 
