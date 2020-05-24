@@ -333,7 +333,7 @@ Parse.Cloud.define('receipts', async (req) => {
                 var receiptDate = results[i].get('date');
                 console.log('receipt date: ' + receiptDate);
                 
-                if (receiptDate.getDate() > since) {
+                if (receiptDate > since) {
                     foundItems.push(results[i]);
                 }
             }
