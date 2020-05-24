@@ -318,20 +318,25 @@ Parse.Cloud.define('receipts', async (req) => {
 
 	let returnMessage = 'Ok';
 	
-	var foundItems = [];
-	const query = new Parse.Query('Receipt');
-	query.limit(1000);
-	const results = await query.find();
-    console.log('receipts');
-    for (var i = 0; i < results.length; i++) {
-		var receiptDate = results[i].get('date');
-		var currentDate = new Date();
-		if (receiptDate.getDate() == currentDate.getDate()) {
-			foundItems.push(results[i]);
-		}
-	}
-	returnMessage = JSON.stringify(foundItems);
-
+    if (Object.keys(req.params).length > 0) {
+        console.log(">> receipts json contains data");
+        
+        if (req.params.since) {
+            var since = Date.parse(req.params.since);
+            var foundItems = [];
+            const query = new Parse.Query('Receipt');
+            query.limit(1000);
+            const results = await query.find();
+            console.log('receipts');
+            for (var i = 0; i < results.length; i++) {
+                var receiptDate = results[i].get('date');
+                if (receiptDate.getDate() > since) {
+                    foundItems.push(results[i]);
+                }
+            }
+            returnMessage = JSON.stringify(foundItems);
+        }
+    }
 	//console.log('>> return message: ' + returnMessage);
 	return returnMessage;
 });
