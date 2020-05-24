@@ -322,7 +322,7 @@ Parse.Cloud.define('receipts', async (req) => {
         console.log(">> receipts json contains data");
         
         if (req.params.since) {
-            var since = Date.parse(req.params.since);
+            var since = new Date(req.params.since);
             console.log('since: ' + since);
             var foundItems = [];
             const query = new Parse.Query('Receipt');
