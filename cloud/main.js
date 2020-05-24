@@ -323,6 +323,7 @@ Parse.Cloud.define('receipts', async (req) => {
         
         if (req.params.since) {
             var since = Date.parse(req.params.since);
+            console.log('since: ' + since);
             var foundItems = [];
             const query = new Parse.Query('Receipt');
             query.limit(1000);
@@ -330,6 +331,8 @@ Parse.Cloud.define('receipts', async (req) => {
             console.log('receipts');
             for (var i = 0; i < results.length; i++) {
                 var receiptDate = results[i].get('date');
+                console.log('receipt date: ' + receiptDate);
+                
                 if (receiptDate.getDate() > since) {
                     foundItems.push(results[i]);
                 }
