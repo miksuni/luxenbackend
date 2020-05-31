@@ -28,6 +28,7 @@ const UNKNOWN = 2;
 // even though PT disconnected
 //var watchDog = 0;
 //var watchDogId = "";
+var lastSentId = "";
 
 var transactionStatus = 0;
 var transactionStatusMap = new Map();
@@ -153,16 +154,25 @@ exports.startWS = function () {
 
   jrpc.toStream = function(message){
   	console.log('PT: jrpc.toStream: ' + message);
+    var duplicate = false;
     var jsonObj = JSON.parse(message);
     if (jsonObj.id) {
   	  jsonObj.id = jsonObj.id.toString();
       //if (jsonObj.method === "_Keepalive") {
       //  watchDogId = jsonObj.id;
       //}
+      //
+      if (jsonObj.id === lastSentId) {
+        duplicate = true;
+        console.log('PT: jrpc.toStream, duplicate id: ' + jsonObj.id);
+      }
+      lastSentId = jsonObj.id;
 	  message = JSON.stringify(jsonObj);
       console.log('PT: updated: ' + message);
     }
-    ws.send(message);
+    if (!duplicate) {
+      ws.send(message);
+    }
   }
 
   jrpc.on('_Keepalive', [], function(){
