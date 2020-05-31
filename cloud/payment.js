@@ -263,13 +263,21 @@ exports.purchase = function (amount, receiptId) {
   command = PURCHASE;
   paymentStatus = PROCESSING;
 
-  jrpc.call('Purchase', {"api_key": process.env.PT_API_KEY,
+  try {
+    if (ws) {
+        if (ws.readyState === OPEN) {
+          jrpc.call('Purchase', {"api_key": process.env.PT_API_KEY,
                        "cashier_language": "fi",
-					   "receipt_id": receiptId,
-		               "amount": amount * 100,
+                       "receipt_id": receiptId,
+                       "amount": amount * 100,
                        "currency": "EUR",
                        "forced_authorization": true
-  });
+        });
+      }
+    }
+  } catch(err) {
+    console.log('>> catched error in disconnecting ws: ' + err.message);
+  }
 }
 
 exports.checkLastPurchase = function (amount, receiptId) {
