@@ -28,6 +28,8 @@ const UNKNOWN = 2;
 // even though PT disconnected
 //var watchDog = 0;
 //var watchDogId = "";
+var connectionClosedByPeer = false;
+
 var lastSentId = "";
 
 var transactionStatus = 0;
@@ -74,6 +76,7 @@ exports.startWS = function () {
   }
   ws.on('open', function open() {
 	console.log('ws.on open' );
+    connectionClosedByPeer = false;
     ws.send(JSON.stringify({
         "jsonrpc": "2.0",
         "method": "TerminalInfo",
@@ -83,9 +86,8 @@ exports.startWS = function () {
     }));
   });
 
-  // vastaanotettiin 2 melkein samanaikaista keepalive viestiä samalla id:llä -> yhteys katkaistiin kun molempiin kuitattiin
   ws.on('message', function incoming(data) {
-  	  console.log('ws.on message: ' + data);
+    console.log('ws.on message: ' + data);
   	// handle control commands first
   	var controlCmd = false;
   	var jsonObj = JSON.parse(data);
@@ -182,6 +184,7 @@ exports.startWS = function () {
 
   jrpc.on('_CloseReason', ['error'], function(error){
     console.log('_CloseReason: ' + JSON.stringify(error));
+    connectionClosedByPeer = true;
   });
 
   jrpc.on('StatusEvent', ['timestamp',
@@ -236,14 +239,15 @@ jrpc.on('TerminalInfo', ['result'], function(result){
 });
 };
 
-exports.mul = function () {
+/*exports.mul = function () {
   jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
     console.log('>> mul result: ' + result);
   });
-}
+}*/
 
 exports.close = function () {
-
+  console.log('close');
+  
   var doDisonnect = false;
 
   try {
@@ -262,11 +266,19 @@ exports.close = function () {
 }
 
 exports.keepalive = function () {
-  console.log('_Keepalive');
+  if (connectionClosedByPeer) {
+    console.log('keepalive: returning as connection closed by peer');
+    return;
+  }
+  console.log('keepalive');
   jrpc.call('_Keepalive', {});
 }
 
 exports.purchase = function (amount, receiptId) {
+  if (connectionClosedByPeer) {
+    console.log('purchase: returning as connection closed by peer');
+    return;
+  }
   console.log('PT: Purchase: ' + amount + ', ' + receiptId);
   lastResult.merchantReceipt = "";
   lastResult.customerReceipt = "";
@@ -291,6 +303,10 @@ exports.purchase = function (amount, receiptId) {
 }
 
 exports.checkLastPurchase = function (amount, receiptId) {
+  if (connectionClosedByPeer) {
+    console.log('checkLastPurchase: returning as connection closed by peer');
+    return;
+  }
   console.log('PT: checkLastPurchase: ' + amount + ', ' + receiptId);
   command = CHECK;
 
@@ -316,13 +332,15 @@ exports.getPTStatus = function() {
 	   return {"wsstatus": wsStatus,
                "transactionStatus": transactionStatus,
                "paymentStatus": paymentStatus,
-               "posMessage": posMessage};
+               "posMessage": posMessage,
+               "connectionClosedByPeer": connectionClosedByPeer};
     } catch(err) {
        console.log('>> catched error in getting ws status: ' + err.message);
        return {"wsstatus": -1,
                "transactionStatus": transactionStatus,
                "paymentStatus": paymentStatus,
-               "posMessage": posMessage};
+               "posMessage": posMessage,
+               "connectionClosedByPeer": connectionClosedByPeer};
     }
 }
 
