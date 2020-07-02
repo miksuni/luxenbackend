@@ -348,23 +348,18 @@ exports.getReceiptText = function() {
     return lastResult;
 }
 
-/*setInterval(function() { 
-    console.log("Hello");
-    
-    try {
-        if (ws) {
-            if (ws.readyState === OPEN) {
-                if (watchDog > 0) {
-                    console.log('WS CONNECTION BROKEN');
-                } else {
-                    console.log("Send keepalive");
-                    watchDog++;
-                    jrpc.call('_Keepalive', {"": ""});
-                }
-            }
-        }
-    } catch(err) {
-        console.log('>> catched error in checking ws: ' + err.message);
+exports.test = function () {
+  console.log('Test');
+
+  try {
+    if (ws) {
+        if (ws.readyState === OPEN) {
+          jrpc.call('Test', {"api_key": process.env.PT_API_KEY,
+                             "test_id": "large_file_download"
+        });
+      }
     }
-    
- }, 10000);*/
+  } catch(err) {
+    console.log('>> catched error in doing test');
+  }
+}

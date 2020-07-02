@@ -54,6 +54,11 @@ Parse.Cloud.define('close_pt_connection', async (req) => {
 	return 'Ok';
 })
 
+Parse.Cloud.define('test', async (req) => {
+    PT.test();
+    return 'Ok';
+})
+
 Parse.Cloud.define('send_email', async (req) => {
 	let returnMessage = 'Ok';
 	console.log(">>>> send_email");
