@@ -35,6 +35,18 @@ Parse.Cloud.define('purchase', async (req) => {
 	return returnMessage;
 })
 
+Parse.Cloud.define('check_last_purchase', async (req) => {
+    let returnMessage = 'Ok';
+    console.log(">> check_last_purchase");
+    if (Object.keys(req.params).length > 1) {
+        if (('amount' in req.params) && ('receiptId' in req.params)) {
+            console.log('>>' + req.params.amount + ", " + req.params.receiptId);
+            PT.checkLastPurchase(req.params.amount, req.params.receiptId);
+        }
+    }
+    return returnMessage;
+})
+
 Parse.Cloud.define('get_transcation_status', async (req) => {
 	return JSON.stringify(PT.getTransactionStatus());
 })

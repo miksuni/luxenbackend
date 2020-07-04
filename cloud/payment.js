@@ -140,9 +140,12 @@ exports.startWS = function () {
           lastResult.customerReceipt = jsonObj.result.customer_receipt.text;
           
         } else {
-          console.log('Card payment failed')
+          console.log('Card payment failed');
           transactionStatus = 0;
           posMessage = "";
+          if (jsonObj.error.message) {
+            posMessage = jsonObj.error.message;
+          }
           paymentStatus = FAILED;
         }
         break;
@@ -275,6 +278,7 @@ exports.keepalive = function () {
 }
 
 exports.purchase = function (amount, receiptId) {
+  posMessage = "";
   if (connectionClosedByPeer) {
     console.log('purchase: returning as connection closed by peer');
     return;
@@ -303,6 +307,7 @@ exports.purchase = function (amount, receiptId) {
 }
 
 exports.checkLastPurchase = function (amount, receiptId) {
+  posMessage = "";
   if (connectionClosedByPeer) {
     console.log('checkLastPurchase: returning as connection closed by peer');
     return;
