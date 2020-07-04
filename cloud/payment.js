@@ -278,7 +278,6 @@ exports.keepalive = function () {
 }
 
 exports.purchase = function (amount, receiptId) {
-  posMessage = "";
   if (connectionClosedByPeer) {
     console.log('purchase: returning as connection closed by peer');
     return;
@@ -307,7 +306,6 @@ exports.purchase = function (amount, receiptId) {
 }
 
 exports.checkLastPurchase = function (amount, receiptId) {
-  posMessage = "";
   if (connectionClosedByPeer) {
     console.log('checkLastPurchase: returning as connection closed by peer');
     return;
