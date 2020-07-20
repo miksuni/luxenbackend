@@ -7,7 +7,8 @@ var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
 //const WebSocket = require('ws');
 
-var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
+//var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
+var databaseUri = process.env.DATABASE_URI || process.env.DB_URI;
 
 if (!databaseUri) {
   console.log('DATABASE_URI not specified, falling back to localhost.');
