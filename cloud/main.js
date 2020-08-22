@@ -444,6 +444,14 @@ Parse.Cloud.define('addproduct', async (req) => {
 
 	if (Object.keys(req.params).length > 0) {
 		console.log(">> addproduct: json contains data");
+        
+        // save log data
+        var logEntry = new Parse.Object('ProductDbLog');
+        logEntry.set('eventType', "add");
+        logEntry.set('eventData', req.params);
+        logEntry.save().then(function(logEntry) {
+            console.log('>> log saved');
+        }, function(err) { console.log(err); });
 
 		var obj = new Parse.Object('ProductInfo');
 
@@ -474,15 +482,6 @@ Parse.Cloud.define('addproduct', async (req) => {
 		obj.save().then(function(obj) {
 			console.log('>> productInfo saved');
 		}, function(err) { console.log(err); });
-        
-        // save log data
-        var logEntry = new Parse.Object('ProductDbLog');
-        logEntry.set('eventType', "add");
-        logEntry.set('eventData', req.params);
-        logEntry.save().then(function(logEntry) {
-            console.log('>> log saved');
-        }, function(err) { console.log(err); });
-        
 	} else {
 		console.log(">> productinfo json does not contain data");
 	}
@@ -494,6 +493,14 @@ Parse.Cloud.define('saveproduct', async (req) => {
 
 	if (Object.keys(req.params).length > 0) {
 		console.log(">> productinfo json contains data, objectId: " + req.params.objectId);
+        
+        // save log data
+        var logEntry = new Parse.Object('ProductDbLog');
+        logEntry.set('eventType', "update");
+        logEntry.set('eventData', req.params);
+        logEntry.save().then(function(logEntry) {
+            console.log('>> log saved');
+        }, function(err) { console.log(err); });
 
 		const query = new Parse.Query('ProductInfo');
 		query.limit(1000);
@@ -521,15 +528,6 @@ Parse.Cloud.define('saveproduct', async (req) => {
 					console.log('>> error in saving: ' + err);
 					returnMessage = 'Failed';
 				});
-                
-                // save log data
-                var logEntry = new Parse.Object('ProductDbLog');
-                logEntry.set('eventType', "update");
-                logEntry.set('eventData', req.params);
-                logEntry.save().then(function(logEntry) {
-                    console.log('>> log saved');
-                }, function(err) { console.log(err); });
-                
 				break;
 			}
 		}
@@ -585,6 +583,14 @@ Parse.Cloud.define('removeproduct', async (req) => {
 Parse.Cloud.define('save_purchase_data', async (req) => {
 
 	let returnMessage = 'Ok';
+
+    // save log data
+    var logEntry = new Parse.Object('ProductDbLog');
+    logEntry.set('eventType', "purhase");
+    logEntry.set('eventData', req.params);
+    logEntry.save().then(function(logEntry) {
+        console.log('>> log saved');
+    }, function(err) { console.log(err); });
 
 	for (var i = 0; i < req.params.receiptData.items.length; i++) {
 		if (req.params.receiptData.items[i].sum > 0) {
@@ -685,14 +691,6 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 	stateobject.save().then(function(stateobject) {
 		console.log('>> current state updated');
 	}, function(err) { console.log('--current state save error' + err); });
-    
-    // save log data
-    var logEntry = new Parse.Object('ProductDbLog');
-    logEntry.set('eventType', "purhase");
-    logEntry.set('eventData', req.params);
-    logEntry.save().then(function(logEntry) {
-        console.log('>> log saved');
-    }, function(err) { console.log(err); });
 });
 
 
