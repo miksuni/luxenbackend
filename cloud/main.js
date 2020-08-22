@@ -474,6 +474,15 @@ Parse.Cloud.define('addproduct', async (req) => {
 		obj.save().then(function(obj) {
 			console.log('>> productInfo saved');
 		}, function(err) { console.log(err); });
+        
+        // save log data
+        var logEntry = new Parse.Object('ProductDbLog');
+        logEntry.set('eventType', "add");
+        logEntry.set('eventData', req.params);
+        logEntry.save().then(function(logEntry) {
+            console.log('>> log saved');
+        }, function(err) { console.log(err); });
+        
 	} else {
 		console.log(">> productinfo json does not contain data");
 	}
@@ -512,6 +521,15 @@ Parse.Cloud.define('saveproduct', async (req) => {
 					console.log('>> error in saving: ' + err);
 					returnMessage = 'Failed';
 				});
+                
+                // save log data
+                var logEntry = new Parse.Object('ProductDbLog');
+                logEntry.set('eventType', "update");
+                logEntry.set('eventData', req.params);
+                logEntry.save().then(function(logEntry) {
+                    console.log('>> log saved');
+                }, function(err) { console.log(err); });
+                
 				break;
 			}
 		}
@@ -667,6 +685,14 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 	stateobject.save().then(function(stateobject) {
 		console.log('>> current state updated');
 	}, function(err) { console.log('--current state save error' + err); });
+    
+    // save log data
+    var logEntry = new Parse.Object('ProductDbLog');
+    logEntry.set('eventType', "purhase");
+    logEntry.set('eventData', req.params);
+    logEntry.save().then(function(logEntry) {
+        console.log('>> log saved');
+    }, function(err) { console.log(err); });
 });
 
 
@@ -675,7 +701,7 @@ Parse.Cloud.define('addchat', async (req) => {
 	let returnMessage = 'Ok';
 
 	if (Object.keys(req.params).length > 0) {
-		console.log(">> addproduct: json contains data");
+		console.log(">> addchat: json contains data");
 
 		var obj = new Parse.Object('Chat');
 
