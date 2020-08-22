@@ -448,7 +448,7 @@ Parse.Cloud.define('addproduct', async (req) => {
         // save log data
         var logEntry = new Parse.Object('ProductDbLog');
         logEntry.set('eventType', "add");
-        logEntry.set('eventData', req.params);
+        logEntry.set('eventData', JSON.stringify(req.params));
         logEntry.save().then(function(logEntry) {
             console.log('>> log saved');
         }, function(err) { console.log(err); });
@@ -497,7 +497,7 @@ Parse.Cloud.define('saveproduct', async (req) => {
         // save log data
         var logEntry = new Parse.Object('ProductDbLog');
         logEntry.set('eventType', "update");
-        logEntry.set('eventData', req.params);
+        logEntry.set('eventData', JSON.stringify(req.params));
         logEntry.save().then(function(logEntry) {
             console.log('>> log saved');
         }, function(err) { console.log(err); });
@@ -587,7 +587,7 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
     // save log data
     var logEntry = new Parse.Object('ProductDbLog');
     logEntry.set('eventType', "purhase");
-    logEntry.set('eventData', req.params);
+    logEntry.set('eventData', JSON.stringify(req.params));
     logEntry.save().then(function(logEntry) {
         console.log('>> log saved');
     }, function(err) { console.log(err); });
