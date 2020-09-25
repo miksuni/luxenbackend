@@ -298,6 +298,7 @@ Parse.Cloud.define('send_email', async (req) => {
 });
 
 function authorized(auth) {
+    console.log("auth: " + auth);
     return (auth === process.env.CASHIER_AUTH)
 }
 
