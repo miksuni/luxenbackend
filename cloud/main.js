@@ -306,8 +306,11 @@ Parse.Cloud.define('cashiers', async (req) => {
 
 	let returnMessage = 'Ok';
 
-     if (!authorized(req.params.auth)) {
-        return "Not authorized";
+     if (req.params.auth) {
+        console.log("--> auth: " + req.params.auth);
+        if (req.params.auth !== process.env.CASHIER_AUTH) {
+           return "Not authorized";
+        }
      }
 
 	const query = new Parse.Query('Cashier');
