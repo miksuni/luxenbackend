@@ -297,9 +297,17 @@ Parse.Cloud.define('send_email', async (req) => {
 	return returnMessage;
 });
 
+function authorized(auth) {
+    return (auth === process.env.CASHIER_AUTH)
+}
+
 Parse.Cloud.define('cashiers', async (req) => {
 
 	let returnMessage = 'Ok';
+
+     if (!authorized(req.params.auth)) {
+        return "Not authorized";
+     }
 
 	const query = new Parse.Query('Cashier');
 	query.limit(1000);
