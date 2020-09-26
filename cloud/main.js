@@ -309,7 +309,7 @@ Parse.Cloud.define('cashiers', async (req) => {
      if (req.params.auth) {
         console.log("--> auth: " + req.params.auth);
         if (req.params.auth !== process.env.CASHIER_AUTH) {
-           return "Not authorized";
+           return '[{"error_code":401}]';
         }
      }
 
