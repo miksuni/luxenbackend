@@ -508,7 +508,13 @@ Parse.Cloud.define('saveproduct', async (req) => {
         
         // save log data
         var logEntry = new Parse.Object('ProductDbLog');
-        logEntry.set('eventType', "update");
+        if ('inventoryCorrection' in req.params) {
+        	if (!req.params.inventoryCorrection) {
+        		logEntry.set('eventType', "update");
+        	} else {
+        		logEntry.set('eventType', "inventory_correction");        		
+        	}
+        }
         logEntry.set('eventData', JSON.stringify(req.params));
         logEntry.save().then(function(logEntry) {
             console.log('>> log saved');
