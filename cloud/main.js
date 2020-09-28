@@ -305,11 +305,16 @@ function authorized(auth) {
 Parse.Cloud.define('cashiers', async (req) => {
 
 	let returnMessage = 'Ok';
+	let admin = false;
 
      if (req.params.auth) {
         console.log("--> auth: " + req.params.auth);
-        if (req.params.auth !== process.env.CASHIER_AUTH) {
+        if ((req.params.auth !== process.env.CASHIER_AUTH) && 
+           (req.params.auth !== process.env.CASHIER_ADMIN_AUTH)) {
            return '[{"error_code":401}]';
+        }
+        if (req.params.auth === process.env.CASHIER_ADMIN_AUTH) {
+        	admin = true;
         }
      }
 
@@ -317,7 +322,11 @@ Parse.Cloud.define('cashiers', async (req) => {
 	query.limit(1000);
 	const results = await query.find();
 
-	returnMessage = JSON.stringify(results);
+	if (admin) {
+		returnMessage = '[{"firstName":"Mikko"}]';
+    } else {
+    	returnMessage = JSON.stringify(results);
+    }
 
 	//console.log('>> return message: ' + returnMessage);
 	return returnMessage;
