@@ -302,31 +302,31 @@ function authorized(auth) {
     return (auth === process.env.CASHIER_AUTH)
 }
 
+Parse.Cloud.define('auth', async (req) => {
+
+    if (req.params.auth) {
+    	if (req.params.auth === process.env.CASHIER_TEST_AUTH) {
+    		return '{"auth":"tester"}';
+    	}
+    	if (req.params.auth === process.env.CASHIER_USER_AUTH) {
+    		return '{"auth":"user"}';
+    	}
+    	if (req.params.auth === process.env.CASHIER_ADMIN_AUTH) {
+    		return '{"auth":"admin"}';
+    	}
+    }
+	return '{"auth":"not authorized"}';
+});
+
 Parse.Cloud.define('cashiers', async (req) => {
 
 	let returnMessage = 'Ok';
-	let admin = false;
-
-     if (req.params.auth) {
-        console.log("--> auth: " + req.params.auth);
-        if ((req.params.auth !== process.env.CASHIER_AUTH) && 
-           (req.params.auth !== process.env.CASHIER_ADMIN_AUTH)) {
-           return '[{"error_code":401}]';
-        }
-        if (req.params.auth === process.env.CASHIER_ADMIN_AUTH) {
-        	admin = true;
-        }
-     }
 
 	const query = new Parse.Query('Cashier');
 	query.limit(1000);
 	const results = await query.find();
 
-	if (admin) {
-		returnMessage = '[{"firstName":"Mikko"}]';
-    } else {
-    	returnMessage = JSON.stringify(results);
-    }
+    returnMessage = JSON.stringify(results);
 
 	//console.log('>> return message: ' + returnMessage);
 	return returnMessage;
