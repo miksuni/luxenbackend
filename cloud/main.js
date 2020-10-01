@@ -292,7 +292,7 @@ Parse.Cloud.define('send_email', async (req) => {
 		    });
 		}
 	} else {
-		console.log(">> productinfo json does not contain data");
+		console.log(">> send_email json does not contain data");
 	}
 	return returnMessage;
 });
@@ -316,6 +316,21 @@ Parse.Cloud.define('auth', async (req) => {
     	}
     }
 	return '{"auth":"not authorized"}';
+});
+
+Parse.Cloud.define('setcashier', async (req) => {
+
+    if (req.params.cashier) {
+    	const statequery = new Parse.Query('CurrentState');
+    	console.log('step 1');
+    	stateobject = await statequery.first();
+    	console.log('step 2');
+    	stateobject.set('currentCashier', req.params.cashier);
+    	console.log('step 3');
+    	stateobject.save().then(function(stateobject) {
+    		console.log('>> current state updated');
+    	}, function(err) { console.log('--current state save error' + err); });
+	return '{}';
 });
 
 Parse.Cloud.define('cashiers', async (req) => {
@@ -710,11 +725,8 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 	}
 	
 	const statequery = new Parse.Query('CurrentState');
-	console.log('step 1');
 	stateobject = await statequery.first();
-	console.log('step 2');
 	stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
-	console.log('step 3');
 	stateobject.save().then(function(stateobject) {
 		console.log('>> current state updated');
 	}, function(err) { console.log('--current state save error' + err); });
