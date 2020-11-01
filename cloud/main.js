@@ -659,8 +659,14 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 				console.log('>>' + req.params.receiptData.items[i].committee);
 				obj.set('committee', req.params.receiptData.items[i].committee);
 			}
-			obj.set('reported', false);
-			
+            if ('testUser' in req.params.receiptData) {
+                console.log('>>' + req.params.receiptData.testUser);
+                if (req.params.receiptData.testUser) {
+                    obj.set('reported', true);
+                } else {
+                    obj.set('reported', false);
+                }
+            }
 			obj.save().then(function(obj) {
 				console.log('>> Receipt saved');
 				console.log('>> Object id: ' + obj.id);
