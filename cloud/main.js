@@ -292,7 +292,7 @@ Parse.Cloud.define('send_email', async (req) => {
 		    });
 		}
 	} else {
-		console.log(">> productinfo json does not contain data");
+		console.log(">> send_email json does not contain data");
 	}
 	return returnMessage;
 });
@@ -302,22 +302,47 @@ function authorized(auth) {
     return (auth === process.env.CASHIER_AUTH)
 }
 
+Parse.Cloud.define('auth', async (req) => {
+
+    if (req.params.auth) {
+    	if (req.params.auth === process.env.CASHIER_TEST_AUTH) {
+    		return '{"auth":"tester"}';
+    	}
+    	if (req.params.auth === process.env.CASHIER_USER_AUTH) {
+    		return '{"auth":"user"}';
+    	}
+    	if (req.params.auth === process.env.CASHIER_ADMIN_AUTH) {
+    		return '{"auth":"admin"}';
+    	}
+    }
+	return '{"auth":"not authorized"}';
+});
+
+Parse.Cloud.define('setcashier', async (req) => {
+
+    if (req.params.cashier) {
+    	const statequery = new Parse.Query('CurrentState');
+    	console.log('step 1');
+    	stateobject = await statequery.first();
+    	console.log('step 2');
+    	stateobject.set('currentCashier', req.params.cashier);
+    	console.log('step 3');
+    	stateobject.save().then(function(stateobject) {
+    		console.log('>> current state updated');
+    	}, function(err) { console.log('--current state save error' + err); });
+    }
+	return '{}';
+});
+
 Parse.Cloud.define('cashiers', async (req) => {
 
 	let returnMessage = 'Ok';
-
-     if (req.params.auth) {
-        console.log("--> auth: " + req.params.auth);
-        if (req.params.auth !== process.env.CASHIER_AUTH) {
-           return '[{"error_code":401}]';
-        }
-     }
 
 	const query = new Parse.Query('Cashier');
 	query.limit(1000);
 	const results = await query.find();
 
-	returnMessage = JSON.stringify(results);
+    returnMessage = JSON.stringify(results);
 
 	//console.log('>> return message: ' + returnMessage);
 	return returnMessage;
@@ -508,7 +533,13 @@ Parse.Cloud.define('saveproduct', async (req) => {
         
         // save log data
         var logEntry = new Parse.Object('ProductDbLog');
-        logEntry.set('eventType', "update");
+        if ('inventoryCorrection' in req.params) {
+        	if (!req.params.inventoryCorrection) {
+        		logEntry.set('eventType', "update");
+        	} else {
+        		logEntry.set('eventType', "inventory_correction");        		
+        	}
+        }
         logEntry.set('eventData', JSON.stringify(req.params));
         logEntry.save().then(function(logEntry) {
             console.log('>> log saved');
@@ -701,11 +732,8 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 	}
 	
 	const statequery = new Parse.Query('CurrentState');
-	console.log('step 1');
 	stateobject = await statequery.first();
-	console.log('step 2');
 	stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
-	console.log('step 3');
 	stateobject.save().then(function(stateobject) {
 		console.log('>> current state updated');
 	}, function(err) { console.log('--current state save error' + err); });
