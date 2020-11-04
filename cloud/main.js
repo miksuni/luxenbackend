@@ -604,6 +604,17 @@ Parse.Cloud.define('removeproduct', async (req) => {
 	if (Object.keys(req.params).length > 0) {
 		console.log(">> removeproduct: productinfo json contains data, objectId: " + req.params.objectId);
 
+        // save log data
+        var logEntry = new Parse.Object('ProductDbLog');
+        logEntry.set('eventType', "remove");
+        if ('productName' in req.params) {
+        	logEntry.set('productName', req.params.productName);
+        }
+        logEntry.set('eventData', JSON.stringify(req.params));
+        logEntry.save().then(function(logEntry) {
+            console.log('>> log saved');
+        }, function(err) { console.log(err); });
+		
 		const query = new Parse.Query('ProductInfo');
 		query.limit(1000);
 		const results = await query.find();
