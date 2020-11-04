@@ -485,6 +485,9 @@ Parse.Cloud.define('addproduct', async (req) => {
         // save log data
         var logEntry = new Parse.Object('ProductDbLog');
         logEntry.set('eventType', "add");
+        if ('productName' in req.params) {
+        	logEntry.set('productName', req.params.productName);
+        }
         logEntry.set('eventData', JSON.stringify(req.params));
         logEntry.save().then(function(logEntry) {
             console.log('>> log saved');
