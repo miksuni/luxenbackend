@@ -540,6 +540,15 @@ Parse.Cloud.define('saveproduct', async (req) => {
         		logEntry.set('eventType', "inventory_correction");        		
         	}
         }
+        if ('productName' in req.params) {
+        	logEntry.set('productName', req.params.productName);
+        }
+        if ('previousAmount' in req.params) {
+        	logEntry.set('previousAmount', req.params.previousAmount);
+        }
+        if ('amountInStock' in req.params) {
+        	logEntry.set('newAmount', parseInt(req.params.amountInStock,10));
+        }
         logEntry.set('eventData', JSON.stringify(req.params));
         logEntry.save().then(function(logEntry) {
             console.log('>> log saved');
