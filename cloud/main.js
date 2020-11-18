@@ -769,7 +769,7 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 	stateobject.save().then(function(stateobject) {
 		console.log('>> current state updated');
 	}, function(err) { console.log('--current state save error' + err); });
-	return JSON.stringify({ receiptNr: receiptNr });
+	return JSON.stringify({ "receiptNr": receiptNr });
 });
 
 
