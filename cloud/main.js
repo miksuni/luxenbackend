@@ -657,6 +657,12 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
     logEntry.save().then(function(logEntry) {
         console.log('>> log saved');
     }, function(err) { console.log(err); });
+    
+    // get receipt number
+	const statequery = new Parse.Query('CurrentState');
+	stateobject = await statequery.first();
+	var receiptNr = stateobject.get('lastReceiptNr');
+	receiptNr++;
 
 	for (var i = 0; i < req.params.receiptData.items.length; i++) {
 		if (req.params.receiptData.items[i].sum > 0) {
@@ -664,10 +670,11 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 			
 			var obj = new Parse.Object('Receipt');
 			
-			if ('receiptNr' in req.params.receiptData) {
-				console.log('>>' + req.params.receiptData.receiptNr);
-				obj.set('receiptNr', req.params.receiptData.receiptNr);
-			}
+			//if ('receiptNr' in req.params.receiptData) {
+			//	console.log('>>' + req.params.receiptData.receiptNr);
+			//	obj.set('receiptNr', req.params.receiptData.receiptNr);
+			//}
+			obj.set('receiptNr', receiptNr);
 			obj.set('date', new Date());
 			if ('cashier' in req.params.receiptData) {
 				console.log('>>' + req.params.receiptData.cashier);
@@ -732,7 +739,8 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 		console.log('>> found item');
 		var itemobj = new Parse.Object('SoldItem');
 		itemobj.set('receipt', obj);
-		itemobj.set('receiptNr', req.params.receiptData.receiptNr);
+		//itemobj.set('receiptNr', req.params.receiptData.receiptNr);
+		itemobj.set('receiptNr', receiptNr);
 		itemobj.set('productName', req.params.productList[i].productName);
 		itemobj.set('price', req.params.productList[i].price);
 		//itemobj.set('productInfo', req.params.productList[i]);
@@ -754,12 +762,14 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 		}, function(err) { console.log('itemobj save error' + err); });
 	}
 	
-	const statequery = new Parse.Query('CurrentState');
-	stateobject = await statequery.first();
-	stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
+	//const statequery = new Parse.Query('CurrentState');
+	//stateobject = await statequery.first();
+	//stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
+	stateobject.set('lastReceiptNr', receiptNr);
 	stateobject.save().then(function(stateobject) {
 		console.log('>> current state updated');
 	}, function(err) { console.log('--current state save error' + err); });
+	return { receiptNr: receiptNr };
 });
 
 
