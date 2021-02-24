@@ -14,11 +14,6 @@ Parse.Cloud.define('connect_to_pt', async (req) => {
 Parse.Cloud.define('pt_command', async (req) => {
 	let returnMessage = 'Ok';
 	console.log(">> pt command");
-	//if (Object.keys(req.params).length > 0) {
-	//	if ('command' in req.params) {
-	//		console.log('>>' + req.params.command);
-	//	}
-	//}
 	PT.keepalive();
 	return returnMessage;
 })
@@ -90,12 +85,6 @@ Parse.Cloud.define('send_email', async (req) => {
 		// time.
 		const TOKEN_PATH = 'token.json';
 
-		// Load client secrets from a local file.
-		//fs.readFile('credentials.json', (err, content) => {
-		//  if (err) return console.log('Error loading client secret file:', err);
-			// Authorize a client with credentials, then call the Gmail API.
-			//  authorize(JSON.parse(content), sendMessage);
-		//});
 		authorize(JSON.parse(process.env.GOOGLE_CREDENTIALS), sendMessage);
 
 		/**
@@ -108,69 +97,10 @@ Parse.Cloud.define('send_email', async (req) => {
 			const {client_secret, client_id, redirect_uris} = credentials.installed;
 			const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
-			// Check if we have previously stored a token.
-			//fs.readFile(TOKEN_PATH, (err, token) => {
-			//  if (err) return getNewToken(oAuth2Client, callback);
-			//  oAuth2Client.setCredentials(JSON.parse(token));
-			//  callback(oAuth2Client);
-			//});
 			oAuth2Client.setCredentials(JSON.parse(process.env.GOOGLE_TOKEN));
 			callback(oAuth2Client);
 		}
-
-	
-		/**
-		 * Get and store new token after prompting for user authorization, and then
-		 * execute the given callback with the authorized OAuth2 client.
-		 * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
-		 * @param {getEventsCallback} callback The callback for the authorized client.
-		 */
-		function getNewToken(oAuth2Client, callback) {
-		  const authUrl = oAuth2Client.generateAuthUrl({
-		    access_type: 'offline',
-		    scope: SCOPES,
-		  });
-		  console.log('Authorize this app by visiting this url:', authUrl);
-		  const rl = readline.createInterface({
-		    input: process.stdin,
-		    output: process.stdout,
-		  });
-		  rl.question('Enter the code from that page here: ', (code) => {
-		    rl.close();
-		    oAuth2Client.getToken(code, (err, token) => {
-		      if (err) return console.error('Error retrieving access token', err);
-		      oAuth2Client.setCredentials(token);
-		      // Store the token to disk for later program executions
-		      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-		        if (err) return console.error(err);
-		        console.log('Token stored to', TOKEN_PATH);
-		      });
-		      callback(oAuth2Client);
-		    });
-		  });
-		}
-	
-//		function makeBody(to, from, subject, message) {
-//		    var str = ["Content-Type: text/plain; charset=\"UTF-8\"\n",
-//		        "MIME-Version: 1.0\n",
-//		        "Content-Transfer-Encoding: 7bit\n",
-//		        "to: ", to, "\n",
-//		        "from: ", from, "\n",
-//		        "subject: ", subject, "\n\n",
-//		        message
-//		    ].join('');
-		
-//		function makeBody(to, from, subject, message) {
-//			var str = ["Content-Type: ", req.params.format,
-//				"charset=\"UTF-8\"\n",
-//			    "MIME-Version: 1.0\n",
-//			    "Content-Transfer-Encoding: 7bit\n",
-//			    "to: ", to, "\n",
-//			    "from: ", from, "\n",
-//			    "subject: ", subject, "\n\n",
-//			    message,
-//		    ].join('');
-		    
+ 
 		function makeBody(to, from, subject, message) {
 			var contentType = "";
 			if (req.params.format === "text/html") {
@@ -230,7 +160,6 @@ Parse.Cloud.define('send_email', async (req) => {
 			    return encodedMail;
 			}
 		}
-		
 		
 		function makeOrderMessage() {
 			var str = "";
@@ -322,11 +251,8 @@ Parse.Cloud.define('setcashier', async (req) => {
 
     if (req.params.cashier) {
     	const statequery = new Parse.Query('CurrentState');
-    	console.log('step 1');
     	stateobject = await statequery.first();
-    	console.log('step 2');
     	stateobject.set('currentCashier', req.params.cashier);
-    	console.log('step 3');
     	stateobject.save().then(function(stateobject) {
     		console.log('>> current state updated');
     	}, function(err) { console.log('--current state save error' + err); });
@@ -447,7 +373,6 @@ Parse.Cloud.define('set_as_reported', async (req) => {
 			}
 		}
 	}
-
 });
 
 Parse.Cloud.define('sold_items', async (req) => {
@@ -670,10 +595,6 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 			
 			var obj = new Parse.Object('Receipt');
 			
-			//if ('receiptNr' in req.params.receiptData) {
-			//	console.log('>>' + req.params.receiptData.receiptNr);
-			//	obj.set('receiptNr', req.params.receiptData.receiptNr);
-			//}
 			obj.set('receiptNr', receiptNr);
 			obj.set('date', new Date());
 			if ('cashier' in req.params.receiptData) {
@@ -739,11 +660,9 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 		console.log('>> found item');
 		var itemobj = new Parse.Object('SoldItem');
 		itemobj.set('receipt', obj);
-		//itemobj.set('receiptNr', req.params.receiptData.receiptNr);
 		itemobj.set('receiptNr', receiptNr);
 		itemobj.set('productName', req.params.productList[i].productName);
 		itemobj.set('price', req.params.productList[i].price);
-		//itemobj.set('productInfo', req.params.productList[i]);
 		itemobj.set('productObjectId', req.params.productList[i].objectId);
 		itemobj.set('quantity', req.params.productList[i].quantity);
 		itemobj.save().then(function(itemobj) {
@@ -762,9 +681,6 @@ Parse.Cloud.define('save_purchase_data', async (req) => {
 		}, function(err) { console.log('itemobj save error' + err); });
 	}
 	
-	//const statequery = new Parse.Query('CurrentState');
-	//stateobject = await statequery.first();
-	//stateobject.set('lastReceiptNr', req.params.receiptData.receiptNr);
 	stateobject.set('lastReceiptNr', receiptNr);
 	stateobject.save().then(function(stateobject) {
 		console.log('>> current state updated');

@@ -242,12 +242,6 @@ jrpc.on('TerminalInfo', ['result'], function(result){
 });
 };
 
-/*exports.mul = function () {
-  jrpc.call('mul', {y: 3, x: 2}).then(function (result) {
-    console.log('>> mul result: ' + result);
-  });
-}*/
-
 exports.close = function () {
   console.log('close');
   
