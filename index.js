@@ -1,13 +1,7 @@
-// Example express application adding the parse-server module to expose Parse
-// compatible API routes.
-
 var express = require('express');
-//const basicAuth = require('express-basic-auth');
 var ParseServer = require('parse-server').ParseServer;
 var path = require('path');
-//const WebSocket = require('ws');
 
-//var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI;
 var databaseUri = process.env.DATABASE_URI || process.env.DB_URI;
 
 if (!databaseUri) {
@@ -17,9 +11,9 @@ if (!databaseUri) {
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID, // || 'myAppId',
-  masterKey: process.env.MASTER_KEY, //|| '123', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'https://luxen.herokuapp.com/parse',  // Don't forget to change to https if needed
+  appId: process.env.APP_ID,
+  masterKey: process.env.MASTER_KEY,
+  serverURL: process.env.SERVER_URL || 'https://luxen.herokuapp.com/parse',
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
@@ -29,12 +23,6 @@ var api = new ParseServer({
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 var app = express();
-
-/*app.use(basicAuth({
-	users: { 'someuser': 'somepassword' },
-	challenge: true,
-	realm: 'Imb4T3st4pp',
-}));*/
 
 // Serve static assets from the /public folder
 //app.use('/public', express.static(path.join(__dirname, '/public')));
@@ -62,9 +50,3 @@ httpServer.listen(port, function() {
 
 // This will enable the Live Query real-time server
 ParseServer.createLiveQueryServer(httpServer);
-
-//const ws = new WebSocket('wss://fierce-shelf-80455.herokuapp.com');
-
-//ws.on('message', function incoming(data) {
-//	  console.log(data);
-//});
